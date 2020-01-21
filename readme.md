@@ -9,3 +9,5 @@ git commit -am "Adiciona e faz o comment"
 
 git branch
 git diff
+
+enviado para o github git push origim master
