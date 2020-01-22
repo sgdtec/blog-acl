@@ -11,3 +11,7 @@ git branch
 git diff
 
 enviado para o github git push origim master
+
+envia arquivo para o repositorio remoto
+
+git push -u origin master
