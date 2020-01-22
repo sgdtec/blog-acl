@@ -17,11 +17,11 @@ class CreatePostsTable extends Migration
             $table->bigIncrements('id');
 
             /** Relacionamento with user */
-            $table->integer('user_id')->unsigned();
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
            
             /** Relacionamento with Category */
-            $table->integer('category_id')->unsigned();
+            $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             
             $table->string('title');

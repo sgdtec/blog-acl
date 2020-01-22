@@ -17,11 +17,11 @@ class CreateCommentAnswersTable extends Migration
             $table->bigIncrements('id');
 
             /** Relacinamento with User */
-            $table->integer('user_id')->unsigned();
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
            
             /** Relacionamento with Posts */
-            $table->integer('post_id')->unsigned();
+            $table->unsignedBigInteger('post_id');
             $table->foreing('post_id')->references('id')->on('posts')->onDelete('cascade');
             
             /** Relacioamento with Comments */
