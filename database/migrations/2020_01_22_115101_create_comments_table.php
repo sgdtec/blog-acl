@@ -23,6 +23,7 @@ class CreateCommentsTable extends Migration
             /** Relacionamento with Posts */
             $table->integer('post_id')->unsigned();
             $table->foreing('post_id')->references('id')->on('posts')->onDelete('cascade');
+           
             $table->timestamps();
             $table->text('description');
             $table->date('date');
