@@ -22,11 +22,11 @@ class CreateCommentAnswersTable extends Migration
            
             /** Relacionamento with Posts */
             $table->unsignedBigInteger('post_id');
-            $table->foreing('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             
             /** Relacioamento with Comments */
-            $table->integer('comment_id')->unsigned();
-            $table->foreing('comment_id')->references('id')->on('comments')->onDelete('cascade');
+            $table->unsignedBigInteger('comment_id');
+            $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade');
            
             $table->text('description');
             $table->date('date');

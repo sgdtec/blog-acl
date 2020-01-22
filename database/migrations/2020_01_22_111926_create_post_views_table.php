@@ -22,7 +22,7 @@ class CreatePostViewsTable extends Migration
             
             /** Relacionamento with Posts */
             $table->unsignedBigInteger('post_id');
-            $table->foreing('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->timestamps();
         });
     }
