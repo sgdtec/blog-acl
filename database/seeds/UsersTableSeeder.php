@@ -16,7 +16,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Anonymo',
             'email' => 'anonymo@email.com',
             'password' => bcrypt('123'),
-            'bibliography' => 'Usuário Anonymous'
+            'bibliograply' => 'Usuário Anonymous'
         ]);
     }
 }
