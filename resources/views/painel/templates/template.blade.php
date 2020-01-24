@@ -27,16 +27,16 @@
 	<div class="list-menu">
 		<ul class="menu-list">
 			<li>
-				<a href="?pag=home">
+				<a href="{{url('/painel')}}">
 					<i class="fa fa-home" aria-hidden="true"></i>
 					Home
 				</a>
 			</li>
 
 			<li>
-				<a href="?pag=list">
+				<a href="{{url('/painel/usuarios/')}}">
 					<i class="fa fa-id-card" aria-hidden="true"></i>
-					Listagem
+					Usuários
 				</a>
 			</li>
 
