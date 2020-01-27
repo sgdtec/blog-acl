@@ -25,7 +25,7 @@ class UserFormRequest extends FormRequest
     {
         return [
             'name'         => 'required|min:3|max:100',  
-            'email'        => 'required|min:3|max:100|email|unique:users',  
+            'email'        => "required|min:3|max:100|email|unique:users,email,{$this->segment(3)},id",  
             'password'     => 'required|min:3|max:20|confirmed',  
             'facebook'     => 'required|min:3|max:100',  
             'twitter'      => 'required|min:3|max:100',  

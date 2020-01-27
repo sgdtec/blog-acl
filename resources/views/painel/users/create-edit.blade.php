@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="title-pg">
-    <h1 class="title-pg">Gestão de Usuários</h1>
+<h1 class="title-pg">Gestão de Usuário: {{$user->name ?? 'Novo'}}</h1>
 </div>
 
 <div class="content-din">
@@ -15,7 +15,11 @@
         </div>        
     @endif
 
-    {!! Form::open(['url' => '/painel/usuarios', 'class' => 'form form-search form-ds', 'files' => true]) !!}
+    @if (isset($user))
+        {!! Form::model($user, ['route' => ['usuarios.update', $user->id], 'class' => 'form form-search form-ds', 'files' => true, 'method' => 'PUT']) !!}
+    @else
+        {!! Form::open(['route' => 'usuarios.store', 'class' => 'form form-search form-ds', 'files' => true]) !!}
+    @endif
 
         <div class="form-group">
             {!! Form::text('name', null, ['placeholder' => 'Nome', 'class' => 'form-control']) !!}
@@ -30,7 +34,7 @@
         </div>
 
         <div class="form-group">
-            {!! Form::password('password_confimation', ['placeholder' => 'Confirmar senha', 'class' => 'form-control']) !!}
+            {!! Form::password('password_confirmation', ['placeholder' => 'Confirmar senha', 'class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">

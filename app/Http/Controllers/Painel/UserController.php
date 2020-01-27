@@ -11,6 +11,8 @@ class UserController extends Controller
 {
     private $user;
     private $request;
+    protected $totalPage = 10;
+
 
     public function __construct(User $user, Request $request){
         $this->user = $user;
@@ -22,9 +24,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user)
+    public function index()
     {
-        $users = $this->user->all();
+        $users = $this->user->paginate($this->totalPage);
 
         return view('painel.users.index', compact('users'));
     }
@@ -69,12 +71,7 @@ class UserController extends Controller
             else 
                 return redirect('/painel/usuarios/create')
                        ->withErrors(['errors' => 'Erro ao fazer o upload!'])
-                       ->withInput();   
-
-            
-
-
-
+                       ->withInput();
         }
 
         // Insert data of User
@@ -83,7 +80,9 @@ class UserController extends Controller
         if($insertUser) {
             return redirect('/painel/usuarios');
         } else {
-            return 'Fail';    
+            return redirect('/painel/usuarios/create')
+                       ->withErrors(['errors' => 'Falha ao cadastrar!'])
+                       ->withInput();    
         }
     }
 
@@ -93,9 +92,14 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show($id){
+        
+        //Recupera usuário
+        $user = $this->user->find($id);
+
+        return view('painel.users.show', [
+            'user' => $user
+        ]);
     }
 
     /**
@@ -104,9 +108,15 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($id) {
+
+        //Recupera o usuário pelo id
+        $user = $this->user->find($id);
+
+        return view('painel.users.create-edit', [
+            'user' => $user
+        ]);
+
     }
 
     /**
@@ -116,9 +126,45 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(UserFormRequest $request,$id){
+        //Recebendo os Dados do Form
+        $dataUser = $request->all();
+
+        //Cria o objreto do usuário
+        $user = $this->user->find($id);
+
+        //Criptografar Password
+        if (isset($dataUser['password']) && $dataUser['password'] != '') {
+            $dataUser['password'] = bcrypt($dataUser['password']);
+        } else {
+            unset($dataUser['password']);    
+        }
+
+        //Verifica se existe uma imagem setada no Form
+        if($request->hasFile('image')) {
+            //Pega imagem do form
+            $image = $request->file('image');
+
+            //Agora vai efetuar o upload
+            $upload = $image->storeAs('users', $usr->image);
+
+            if(!$upload)
+                return redirect()->route('usuarios.edit', ['id' => $id])
+                                 ->withErrors(['errors' => 'Erro ao fazer o upload!'])
+                                 ->withInput();
+        }
+
+        // Altera os dadosdo User
+        $insertUser = $user->update($dataUser);
+
+        if($insertUser) {
+            return redirect()->route('usuarios.index');
+        } else {
+            return redirect()->route('usuarios.edit', ['id' => $id])
+                             ->withErrors(['errors' => 'Falha ao editar, tente novamente!'])
+                             ->withInput();    
+        }
+        
     }
 
     /**
@@ -127,8 +173,31 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id) {
+
+        $user = $this->user->find($id);
+
+        $delete = $user->delete();
+
+        if($delete) {
+            return redirect()->route('usuarios.index');
+        } else {
+            return redirect()->route('usarios.show', ['id' => $id])
+                             ->withErrors(['errors' => "Falha ao deletar o usuário $user->name, tente novamente!"]);
+        }
+    }
+
+    public function search() {
+        $dataForm = $this->request->except('_token');
+
+        //Filtra os usuários
+        $users = $this->user->where('name', 'LIKE', "%{$dataForm['key-search']}%")
+                            ->orWhere('email', $dataForm['key-search'])
+                            ->paginate($this->totalPage);
+
+        return view('painel.users.index',[
+            'users' => $users,
+            'dataForm' => $dataForm
+        ]);          
     }
 }
