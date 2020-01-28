@@ -1,4 +1,4 @@
-comando do jit
+comando do git
 
 git status
 git log
