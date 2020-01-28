@@ -100,8 +100,7 @@ class StandartController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id){
         $cat = $this->category->find($id);
 
         $title = "categoria: {$cat->name}";
@@ -118,8 +117,7 @@ class StandartController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id){
         $cat = $this->category->find($id);
 
         $title = "Editar a Categoria: {$cat->name}";
@@ -137,8 +135,7 @@ class StandartController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryFormRequest $request, $id)
-    {
+    public function update(CategoryFormRequest $request, $id){
         ///Recebendo os Dados do Form
         $dataForm = $request->all();
 
@@ -186,8 +183,7 @@ class StandartController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
         $cat = $this->category->find($id);
 
         $delete = $cat->delete();
