@@ -10,13 +10,11 @@ use App\Http\Requests\Painel\UserFormRequest;
 class UserController extends Controller
 {
     private $user;
-    private $request;
     protected $totalPage = 10;
 
 
-    public function __construct(User $user, Request $request){
+    public function __construct(User $user){
         $this->user = $user;
-        $this->request = $request;
     }
 
     /**
@@ -24,11 +22,16 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(){
+
+        $title = 'Listagem dos usuários';
+        
         $users = $this->user->paginate($this->totalPage);
 
-        return view('painel.users.index', compact('users'));
+        return view('painel.users.index', [
+            'users' => $users,
+            'title' => $title
+        ]);
     }
 
     /**
@@ -36,9 +39,13 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        return view('painel.users.create-edit');
+    public function create() {
+
+        $title = 'Cadastro de usuários';
+
+        return view('painel.users.create-edit', [
+            'title' => $title
+        ]);
     }
 
     /**
@@ -78,9 +85,10 @@ class UserController extends Controller
         $insertUser = $this->user->create($dataUser);
 
         if($insertUser) {
-            return redirect('/painel/usuarios');
+            return redirect()->route('usuarios.index')
+                             ->with(['success' => 'Cadastro efetuado com sucesso!!']);
         } else {
-            return redirect('/painel/usuarios/create')
+            return redirect()->route('usuarios.create')
                        ->withErrors(['errors' => 'Falha ao cadastrar!'])
                        ->withInput();    
         }
@@ -93,12 +101,15 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id){
+
         
         //Recupera usuário
-        $user = $this->user->find($id);
-
+        $user = $this->user->find($id);        
+        $title = "Usuário : {$user->name}";
+        
         return view('painel.users.show', [
-            'user' => $user
+            'user' => $user,
+            'title' => $title
         ]);
     }
 
@@ -158,7 +169,8 @@ class UserController extends Controller
         $insertUser = $user->update($dataUser);
 
         if($insertUser) {
-            return redirect()->route('usuarios.index');
+            return redirect()->route('usuarios.index')
+            ->with(['success' => 'Alteração efetuada com sucesso!!']);
         } else {
             return redirect()->route('usuarios.edit', ['id' => $id])
                              ->withErrors(['errors' => 'Falha ao editar, tente novamente!'])
@@ -187,12 +199,12 @@ class UserController extends Controller
         }
     }
 
-    public function search() {
-        $dataForm = $this->request->except('_token');
+    public function search(Request $request) {
+        $dataForm = $request->except('_token');
 
         //Filtra os usuários
         $users = $this->user->where('name', 'LIKE', "%{$dataForm['key-search']}%")
-                            ->orWhere('email', $dataForm['key-search'])
+                            ->orWhere('email', 'LIKE', "%{$dataForm['key-search']}%")
                             ->paginate($this->totalPage);
 
         return view('painel.users.index',[

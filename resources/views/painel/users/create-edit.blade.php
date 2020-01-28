@@ -2,6 +2,10 @@
 
 @section('content')
 
+<div class="bred">
+<a href="" class="bred">Home  ></a> <a href="{{route('usuarios.index')}}" class="bred">Usuários</a>
+</div>
+
 <div class="title-pg">
 <h1 class="title-pg">Gestão de Usuário: {{$user->name ?? 'Novo'}}</h1>
 </div>
@@ -65,7 +69,5 @@
             {!! Form::submit('Enviar', ['class' => 'btn btn-primary']) !!}
         </div>
     {!! Form::close() !!}
-
 </div><!--Content Dinâmico-->
-
 @endsection()

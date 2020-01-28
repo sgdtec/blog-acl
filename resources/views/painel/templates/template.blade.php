@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-    <title>Painel Blingo!</title>
+    <title>{{$title}}</title>
 
 		<!-- Bootstrap -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -69,13 +69,7 @@
 
 	<div class="content-ds">
 		
-		<div class="bred">
-			<a href="" class="bred">Home  ></a> <a href="" class="bred">Dashboard</a>
-		</div>
-
-		
 		@yield('content')
-
 
 	</div><!--End Content DS-->
 

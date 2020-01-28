@@ -2,6 +2,10 @@
 
 @section('content')
 
+<div class="bred">
+<a href="" class="bred">Home  ></a> <a href="{{route('usuarios.index')}}" class="bred">Usuários</a>
+</div>
+
 <div class="title-pg">
 <h1 class="title-pg">Usuário: {{$user->name}}</h1>
 </div>
