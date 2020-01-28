@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-    <title>{{$title}}</title>
+    <title>{{isset($title) ? $title : 'Painel Blongo!!!'}}</title>
 
 		<!-- Bootstrap -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -41,9 +41,9 @@
 			</li>
 
 			<li>
-				<a href="?pag=forms">
-					<i class="fa fa-fort-awesome" aria-hidden="true"></i>
-					Forms
+			<a href="{{url('/painel/categorias')}}">
+					<i class="fa fa-cubes" aria-hidden="true"></i>
+					Categorias
 				</a>
 			</li>
 		</ul>

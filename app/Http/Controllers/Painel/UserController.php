@@ -106,7 +106,7 @@ class UserController extends Controller
         //Recupera usuário
         $user = $this->user->find($id);        
         $title = "Usuário : {$user->name}";
-        
+
         return view('painel.users.show', [
             'user' => $user,
             'title' => $title
@@ -124,8 +124,11 @@ class UserController extends Controller
         //Recupera o usuário pelo id
         $user = $this->user->find($id);
 
+        $title = "Altera dados do Usuário: $user->name";
+
         return view('painel.users.create-edit', [
-            'user' => $user
+            'user'  => $user,
+            'title' => $title
         ]);
 
     }
@@ -157,7 +160,7 @@ class UserController extends Controller
             $image = $request->file('image');
 
             //Agora vai efetuar o upload
-            $upload = $image->storeAs('users', $usr->image);
+            $upload = $image->storeAs('users', $user->image);
 
             if(!$upload)
                 return redirect()->route('usuarios.edit', ['id' => $id])
@@ -200,16 +203,19 @@ class UserController extends Controller
     }
 
     public function search(Request $request) {
-        $dataForm = $request->except('_token');
+        $dataForm = $request->except('_token');    
 
         //Filtra os usuários
         $users = $this->user->where('name', 'LIKE', "%{$dataForm['key-search']}%")
                             ->orWhere('email', 'LIKE', "%{$dataForm['key-search']}%")
                             ->paginate($this->totalPage);
 
+        $title = "Listagem de Usuários";                    
+
         return view('painel.users.index',[
-            'users' => $users,
-            'dataForm' => $dataForm
+            'users'    => $users,
+            'dataForm' => $dataForm,
+            'title'    => $title
         ]);          
     }
 }
