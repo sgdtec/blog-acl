@@ -1,7 +1,7 @@
 <?php
 
 /*Route Panel*/
-Route::group(['prefix' => 'painel','middleware' => 'auth'], function() {
+Route::group(['prefix' => 'painel'], function() {
     //Routess Users
     Route::any('usuario/pesquisar', 'painel\UserController@search')->name('usuarios.search');
     Route::resource('usuarios', 'Painel\UserController');

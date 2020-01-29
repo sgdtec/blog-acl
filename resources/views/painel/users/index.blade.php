@@ -27,7 +27,7 @@
     </div>
 
     @if (Session::has('success'))
-        <div class="alert alert-success hide-msg" style="float: left; with: 100%; margin: 10px 0px;">
+        <div class="alert alert-success hide-msg" style="float: left; width: 100%; margin: 10px 0px;">
             {{ Session::get('success') }}
         </div>        
     @endif
