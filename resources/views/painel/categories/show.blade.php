@@ -7,7 +7,7 @@
 </div>
 
 <div class="title-pg">
-<h1 class="title-pg">Categoria: {{$cat->name}}</h1>
+<h1 class="title-pg">Categoria: {{$data->name}}</h1>
 </div>
 
 <div class="content-din">
@@ -19,13 +19,13 @@
         </div>        
     @endif
 
-    <h2><strong>Nome:</strong>{{$cat->name}}</h2>
-    <h2><strong>Url:</strong>{{$cat->url}}</h2>
-    <h2><strong>Descrição:</strong>{{$cat->description}}</h2>
+    <h2><strong>Nome:</strong>{{$data->name}}</h2>
+    <h2><strong>Url:</strong>{{$data->url}}</h2>
+    <h2><strong>Descrição:</strong>{{$data->description}}</h2>
 
-    {!! Form::open(['route' => ['categorias.destroy', $cat->id], 'class' => 'form form-search form-ds', 'method' => 'DELETE']) !!}
+    {!! Form::open(['route' => ['categorias.destroy', $data->id], 'class' => 'form form-search form-ds', 'method' => 'DELETE']) !!}
         <div class="form-group">
-            {!! Form::submit("Deletar Categoria:$cat->name", ['class' => 'btn btn-danger']) !!}
+            {!! Form::submit("Deletar Categoria:$data->name", ['class' => 'btn btn-danger']) !!}
         </div>
     {!! Form::close() !!}
 </div><!--Content Dinâmico-->

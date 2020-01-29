@@ -13,6 +13,7 @@ class StandartController extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     protected $totalPage = 10;
+    protected $upload = false;    
 
 
     /**
@@ -24,11 +25,11 @@ class StandartController extends BaseController
     {
         $title = "Listagem {$this->name}s";
 
-        $cats = $this->model->paginate($this->totalPage);
+        $data  = $this->model->paginate($this->totalPage);
         
         return view("{$this->view}.index", [
             'title' => $title,
-            'cats'  => $cats
+            'cats'  => $data
         ]);
     }
 
@@ -55,40 +56,40 @@ class StandartController extends BaseController
     public function store(Request $request)
     {
         //Valida os Dados
-        $this->valadate($request, $this->model->rules());
+        $this->validate($request, $this->model->rules());
 
        //Recebendo os Dados da categoria
        $dataForm = $request->all();
 
        //Verifica se existe uma imagem setada no Form
-       if($request->hasFile('image')) {
+       if($this->upload && $request->hasFile($this->upload['name'])) {
            //Pega imagem do form
-           $image = $request->file('image');
+           $image = $request->file($this->upload['name']);
 
            //Define o nome da Imagem
-           $nameImage = uniqid(date('YmdHis')).'.'.$image->getClientOriginalExtension();
+           $nameFile = uniqid(date('YmdHis')).'.'.$image->getClientOriginalExtension();
 
            //Agora vai efetuar o upload
-           $upload = $image->storeAs('categories', $nameImage);
+           $upload = $image->storeAs($this->upload['path'], $nameFile);
 
            if($upload) 
-               $dataForm['image'] = $nameImage;
+               $dataForm[$this->upload['name']] = $nameFile;
            else 
                return redirect()
-                         ->route('categorias.create')
+                         ->route("{$this->route}.create")
                          ->withErrors(['errors' => 'Erro ao fazer o upload!'])
                          ->withInput();
        }
 
        // Insert os dados da categoria
-       $insertCategory = $this->category->create($dataForm);
+       $insertCategory = $this->model->create($dataForm);
 
        if($insertCategory) {
-           return redirect()->route('categorias.index')
+           return redirect()->route("{$this->route}.index")
                             ->with(['success' => 'Cadastro efetuado com sucesso!!']);
        } else {
            return redirect()
-                      ->route('categorias.create')
+                      ->route("{$this->route}.create")
                       ->withErrors(['errors' => 'Falha ao cadastrar!'])
                       ->withInput();    
        }
@@ -101,12 +102,13 @@ class StandartController extends BaseController
      * @return \Illuminate\Http\Response
      */
     public function show($id){
-        $cat = $this->category->find($id);
 
-        $title = "categoria: {$cat->name}";
+        $data = $this->model->find($id);
 
-        return view('painel.categories.show', [
-            'cat'   => $cat,
+        $title = "{$this->name}: {$data->name}";
+
+        return view("{$this->view}.show", [
+            'data'   => $data,
             'title' => $title
         ]);
     }
@@ -118,12 +120,12 @@ class StandartController extends BaseController
      * @return \Illuminate\Http\Response
      */
     public function edit($id){
-        $cat = $this->category->find($id);
+        $data = $this->model->find($id);
 
-        $title = "Editar a Categoria: {$cat->name}";
+        $title = "Editar {$this->name}: {$data->name}";
 
-        return view('painel.categories.create-edit', [
-            'cat'   => $cat,
+        return view("{$this->view}.create-edit", [
+            'cat'   => $data,
             'title' => $title
         ]);
     }
@@ -135,43 +137,50 @@ class StandartController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryFormRequest $request, $id){
+    public function update(Request $request, $id){
+
+        //valida os Dados
+        $this->validate($request, $this->model->rules($id));
+
         ///Recebendo os Dados do Form
         $dataForm = $request->all();
 
         //Cria o objreto da categoria
-        $cat = $this->category->find($id);
+        $data = $this->model->find($id);
 
         //Verifica se existe uma imagem setada no Form
-        if($request->hasFile('image')) {
+        if($this->upload && $request->hasFile($this->upload['name'])) {
             //Pega imagem do form
-            $image = $request->file('image');
+            $image = $request->file($this->upload['name']);
 
             //verifica se o nome da imagem não, existe
-            if( $cat->image == '' ) {
+            if( $data->image == '' ) {
                 $nameImage = uniqid(date('YmdHis')).'.'.$image->getClientOriginalExtension();
-                $dataForm['image'] = $nameImage;
+                $dataForm[$this->upload['name']] = $nameImage;
             } else {
-                $nameImage = $cat->image;
+                $nameImage = $data->image;
             }
 
             //Agora vai efetuar o upload
-            $upload = $image->storeAs('categories', $nameImage);
+            $upload = $image->storeAs($this->upload['path'], $nameImage);
 
-            if(!$upload)
-                return redirect()->route('categorias.edit', ['id' => $id])
+            if($upload) {
+                $dataForm[$this->upload['name']] = $nameImage;
+            } else {
+                return redirect()->route("{$this->route}.edit", ['id' => $id])
                                  ->withErrors(['errors' => 'Erro ao fazer o upload!'])
                                  ->withInput();
+            }
         }
 
         // Altera os dados da categoria
-        $updateCategory = $cat->update($dataForm);
+        $updateCategory = $data->update($dataForm);
 
         if($updateCategory) {
-            return redirect()->route('categorias.index')
+            return redirect()->route("{$this->route}.index")
                              ->with(['success' => 'Alteração efetuada com sucesso!!']);
         } else {
-            return redirect()->route('categorias.edit', ['id' => $id])
+            return redirect()->route("{$this->route}.edit", ['id' => $id])
                              ->withErrors(['errors' => 'Falha ao editar, tente novamente!'])
                              ->withInput();    
         }
@@ -184,17 +193,19 @@ class StandartController extends BaseController
      * @return \Illuminate\Http\Response
      */
     public function destroy($id){
-        $cat = $this->category->find($id);
 
-        $delete = $cat->delete();
+        $data = $this->model->find($id);        
+
+        if($data){
+            $delete = $data->delete();
+        }
 
         if($delete) {
-            return redirect()->route('categorias.index')
-                             ->with(['success' => "A categoria <b>{$cat->name}</b> foi excluida com sucesso!!"]);
+            return redirect()->route("{$this->route}.index")
+                             ->with(['success' => "A categoria <b>{$data->name}</b> foi excluida com sucesso!!"]);
         } else {
-            return redirect()->route('categorias.edit', ['id' => $id])
-                             ->withErrors(['errors' => "Falha ao excluir a categoria <b>{$cat->name}, tente novamente!"])
-                             ->withInput();    
+            return redirect()->route("{$this->route}.edit", ['id' => $id])
+                             ->withErrors(['errors' => "Falha ao excluir a categoria <b>{$data->name}, tente novamente!"]);
         }
     }
 
@@ -202,14 +213,13 @@ class StandartController extends BaseController
         $dataForm = $request->except('_token');    
 
         //Filtra as categorias
-        $cats = $this->category->where('name', 'LIKE', "%{$dataForm['key-search']}%")
-                            ->orWhere('url', 'LIKE', "%{$dataForm['key-search']}%")
+        $data = $this->model->where('name', 'LIKE', "%{$dataForm['key-search']}%")
                             ->paginate($this->totalPage);
 
         $title = "Pesquisa de categorias";                    
 
-        return view('painel.categories.index',[
-            'cats'    => $cats,
+        return view("{$this->view}.index",[
+            'cats'    => $data,
             'dataForm' => $dataForm,
             'title'    => $title
         ]);          
