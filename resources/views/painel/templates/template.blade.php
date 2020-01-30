@@ -62,7 +62,7 @@
 		  </div>
 		  <ul class="dropdown-menu dp-menu" aria-labelledby="dropDownCuston">
 		    <li><a href="#">Perfil</a></li>
-		    <li><a href="#">Logout</a></li>
+		  <li><a href="{{route('logout')}}">Logout</a></li>
 		  </ul>
 		</div>
 	</div><!--Top Dashboard-->
