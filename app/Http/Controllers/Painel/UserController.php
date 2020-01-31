@@ -159,8 +159,17 @@ class UserController extends Controller
             //Pega imagem do form
             $image = $request->file('image');
 
+            //Verifica se a imagem existe
+            if($user->image == '') {
+                $nameImage = uniqid(date('YmdHis')).'.'.$image->getClientOriginalExtension();
+                $dataUser['image'] = $nameImage;
+            } else {
+                $nameImage = $user->image;
+                $dataUser['image'] = $user->image;
+            }
+
             //Agora vai efetuar o upload
-            $upload = $image->storeAs('users', $user->image);
+            $upload = $image->storeAs('users', $nameImage);
 
             if(!$upload)
                 return redirect()->route('usuarios.edit', ['id' => $id])
@@ -218,4 +227,84 @@ class UserController extends Controller
             'title'    => $title
         ]);          
     }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showProfile() {
+
+        //Recupera o usuário        
+        $user = auth()->user();
+
+        $title = "Meu Perfil: $user->name";
+
+        return view('painel.users.profile', [
+            'user'  => $user,
+            'title' => $title
+        ]);
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateProfile(UserFormRequest $request,$id){
+        
+        //Recebendo os Dados do Form
+        $dataUser = $request->all();
+
+        //Cria o objreto do usuário
+        $user = $this->user->find($id);
+
+        //Criptografar Password
+        $dataUser['password'] = bcrypt($dataUser['password']);
+
+        //Removendo o E-mail para não atualizar
+        unset($dataUser['email']);
+        
+        //Verifica se existe uma imagem setada no Form
+        if($request->hasFile('image')) {
+            //Pega imagem do form
+            $image = $request->file('image');
+
+            //Verifica se a imagem existe
+            if($user->image == '') {
+                $nameImage = uniqid(date('YmdHis')).'.'.$image->getClientOriginalExtension();
+                $dataUser['image'] = $nameImage;
+            } else {
+                $nameImage = $user->image;
+                $dataUser['image'] = $user->image;
+            }
+
+            //Agora vai efetuar o upload
+            $upload = $image->storeAs('users', $nameImage);
+
+            if(!$upload)
+                return redirect()->route('profile')
+                                 ->withErrors(['errors' => 'Erro ao fazer o upload!'])
+                                 ->withInput();
+        }
+
+        // Altera os dadosdo User
+        $insertUser = $user->update($dataUser);
+
+        if($insertUser) {
+            return redirect()->route('profile')
+            ->with(['success' => 'Perfil atualizado com sucesso!!']);
+        } else {
+            return redirect()->route('profile')
+                             ->withErrors(['errors' => 'Falha ao editar seu perfil, tente novamente!'])
+                             ->withInput();    
+        }
+        
+    }
+
+
 }

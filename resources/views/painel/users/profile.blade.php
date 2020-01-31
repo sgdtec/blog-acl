@@ -3,7 +3,8 @@
 @section('content')
 
 <div class="bred">
-    <a href="" class="bred">Home  ></a> <a href="{{route('usuarios.index')}}" class="bred">Usuários</a>
+   <a href="{{ url('/painel') }}" class="bred">Home ></a>
+   <a href="{{ url('/painel/usuarios') }}" class="bred">Usuários > Meu Perfil</a>
 </div>
 
 <div class="title-pg">
@@ -19,18 +20,20 @@
         </div>        
     @endif
 
-    @if (isset($user))
-        {!! Form::model($user, ['route' => ['usuarios.update', $user->id], 'class' => 'form form-search form-ds', 'files' => true, 'method' => 'PUT']) !!}
-    @else
-        {!! Form::open(['route' => 'usuarios.store', 'class' => 'form form-search form-ds', 'files' => true]) !!}
+    @if (Session::has('success'))
+        <div class="alert alert-success hide-msg" style="float: left; width: 100%; margin: 10px 0px;">
+            {{ Session::get('success') }}
+        </div>        
     @endif
 
+    {!! Form::model($user,['route' => ['profile.update', $user->id], 'class' => 'form form-search form-ds', 'files' => true]) !!}
+   
         <div class="form-group">
             {!! Form::text('name', null, ['placeholder' => 'Nome', 'class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
-            {!! Form::email('email', null, ['placeholder' => 'E-mail', 'class' => 'form-control']) !!}
+            {!! Form::hidden('email', null) !!}
         </div>
 
         <div class="form-group">
@@ -71,8 +74,3 @@
     {!! Form::close() !!}
 </div><!--Content Dinâmico-->
 @endsection()
-
-@push('scripts')
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>tinymce.init({selector:'textarea'});</script>
-@endpush

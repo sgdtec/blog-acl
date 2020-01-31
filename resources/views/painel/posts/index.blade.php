@@ -3,25 +3,25 @@
 @section('content')
 
 <div class="bred">
-    <a href="{{url('/painel')}}" class="bred">Home  ></a }}> 
-    <a href="{{route('categorias.index')}}" class="bred">Categorias</a>
+    <a href="{{url('/painel')}}" class="bred">Home ></a }}>
+    <a href="{{route('posts.index')}}" class="bred">Posts</a>
 </div>
     
 <div class="title-pg">
-    <h1 class="title-pg">Listagem das Categorias</h1>
+    <h1 class="title-pg">Listagem dos Posts</h1>
 </div>
 
 <div class="content-din bg-white">
 
     <div class="form-search">
-            {!! Form::open(['route' => 'categorias.search', 'class' => 'form form-inline']) !!}
-                {!! Form::text('key-search', null, ['class' => 'form-control', 'placeholder' => 'Nome da categoria:']) !!}
+            {!! Form::open(['route' => 'posts.search', 'class' => 'form form-inline']) !!}
+                {!! Form::text('key-search', null, ['class' => 'form-control', 'placeholder' => 'Nome do Post:']) !!}
                 {!! Form::submit('Filtrar', ['class' => 'btn btn-primary']) !!}
             {!! Form::close() !!}
     </div>
 
     <div class="class-btn-insert">
-        <a href="{{route('categorias.create')}}" class="btn-insert">
+        <a href="{{route('posts.create')}}" class="btn-insert">
             <span class="glyphicon glyphicon-plus"></span>
             Cadastrar
         </a>
@@ -36,23 +36,19 @@
     <table class="table table-striped">
         <tr>
             <th>Nome</th>
-            <th>Url</th>
-            <th>Descrição</th>
             <th width="200">Ações</th>
         </tr>
 
-        @forelse ($data as $cat)
+        @forelse ($data as $post)       
         <tr>
-            <td>{{$cat>name}}</td>
-            <td>{{$cat>url}}</td>
-            <td>{{$cat>description}}</td>
+            <td>{{$post->title}}</td>
             <td>
-                <a href="{{route('categorias.edit', $cat->id)}}" class="edit"><span class="glyphicon glyphicon-pencil"></span> Edite</a>
-                <a href="{{route('categorias.show', $cat->id)}}" class="delete"><span class="glyphicon glyphicon-eye-open"></span> View</a>
+                <a href="{{route('posts.edit', $post->id)}}" class="edit"><span class="glyphicon glyphicon-pencil"></span> Edite</a>
+                <a href="{{route('posts.show', $post->id)}}" class="delete"><span class="glyphicon glyphicon-eye-open"></span> View</a>
             </td>
         </tr>
     @empty
-        <p>Nenhum categoria cadastrada!</p>
+        <p>Nenhum post cadastrado!</p>
     @endforelse
     </table>
 

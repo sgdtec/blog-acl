@@ -1,48 +1,38 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Painel;
 
+use App\Models\Posts;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Http\Controllers\StandartController;
 
-class StandartController extends BaseController
-{
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+class PostController extends StandartController {
 
-    protected $totalPage = 10;
-    protected $upload = false;    
+    protected $model;
+    protected $name   = 'Post';
+    protected $view   = 'painel.posts';
+    protected $route  = 'posts';
+    protected $upload = ['name' => 'image' , 'path' => 'posts'];
 
+    public function __construct(Posts $post) {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index() {
-        $title = "Listagem {$this->name}s";
-
-        $data  = $this->model->paginate($this->totalPage);
-        
-        return view("{$this->view}.index", [
-            'title' => $title,
-            'data'  => $data
-        ]);
-    }//index
+        $this->model = $post;
+    }//__construct
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $title = "Cadastrar {$this->name}";
 
+        $categories = Category::get()->pluck('name','id');
+
         return view("{$this->view}.create-edit", [
-            'title' => $title
+            'title' => $title,
+            'categories' => $categories
         ]);
     }//create
 
@@ -52,65 +42,53 @@ class StandartController extends BaseController
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
+
         //Valida os Dados
         $this->validate($request, $this->model->rules());
 
        //Recebendo os Dados da categoria
        $dataForm = $request->all();
+       
+       //Pegando se o checkbox está clicado
+       $dataForm['featured'] = isset($dataForm['featured']) ? true : false;
+       
+       //Pegando o usuário logado no momento
+       $dataForm['user_id'] = auth()->user()->id;
 
        //Verifica se existe uma imagem setada no Form
        if($this->upload && $request->hasFile($this->upload['name'])) {
-           //Pega imagem do form
-           $image = $request->file($this->upload['name']);
+        //Pega imagem do form
+        $image = $request->file($this->upload['name']);
 
-           //Define o nome da Imagem
-           $nameFile = uniqid(date('YmdHis')).'.'.$image->getClientOriginalExtension();
+        //Define o nome da Imagem
+        $nameFile = uniqid(date('YmdHis')).'.'.$image->getClientOriginalExtension();
 
-           //Agora vai efetuar o upload
-           $upload = $image->storeAs($this->upload['path'], $nameFile);
+        //Agora vai efetuar o upload
+        $upload = $image->storeAs($this->upload['path'], $nameFile);
 
-           if($upload) 
-               $dataForm[$this->upload['name']] = $nameFile;
-           else 
-               return redirect()
-                         ->route("{$this->route}.create")
-                         ->withErrors(['errors' => 'Erro ao fazer o upload!'])
-                         ->withInput();
-       }
-
-       // Insert os dados da categoria
-       $insertCategory = $this->model->create($dataForm);
-
-       if($insertCategory) {
-           return redirect()->route("{$this->route}.index")
-                            ->with(['success' => 'Cadastro efetuado com sucesso!!']);
-       } else {
-           return redirect()
+        if($upload) 
+            $dataForm[$this->upload['name']] = $nameFile;
+        else 
+            return redirect()
                       ->route("{$this->route}.create")
-                      ->withErrors(['errors' => 'Falha ao cadastrar!'])
-                      ->withInput();    
-       }
+                      ->withErrors(['errors' => 'Erro ao fazer o upload!'])
+                      ->withInput();
+        }
+
+        // Insert os dados da categoria
+        $insertCategory = $this->model->create($dataForm);
+
+        if($insertCategory) {
+            return redirect()->route("{$this->route}.index")
+                                ->with(['success' => 'Cadastro efetuado com sucesso!!']);
+        } else {
+            return redirect()
+                        ->route("{$this->route}.create")
+                        ->withErrors(['errors' => 'Falha ao cadastrar!'])
+                        ->withInput();    
+        }
     }//store
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id){
-
-        $data = $this->model->find($id);
-
-        $title = "{$this->name}: {$data->name}";
-
-        return view("{$this->view}.show", [
-            'data'   => $data,
-            'title' => $title
-        ]);
-    }//show
 
     /**
      * Show the form for editing the specified resource.
@@ -119,17 +97,29 @@ class StandartController extends BaseController
      * @return \Illuminate\Http\Response
      */
     public function edit($id){
+
         $data = $this->model->find($id);
 
-        $title = "Editar {$this->name}: {$data->name}";
+        $title = "Editar {$this->name}: {$data->title}";
+
+        $categories = Category::get()->pluck('name','id');
 
         return view("{$this->view}.create-edit", [
-            'cat'   => $data,
-            'title' => $title
+            'data'       => $data,
+            'title'      => $title,
+            'categories' => $categories
         ]);
     }//edit
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+   
+     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -142,10 +132,10 @@ class StandartController extends BaseController
         $this->validate($request, $this->model->rules($id));
 
         ///Recebendo os Dados do Form
-        $dataForm = $request->all();
-
-        //Cria o objreto da categoria
         $data = $this->model->find($id);
+
+        //Pegando se o checkbox está clicado
+        $dataForm['featured'] = isset($dataForm['featured']) ? true : false;
 
         //Verifica se existe uma imagem setada no Form
         if($this->upload && $request->hasFile($this->upload['name'])) {
@@ -173,6 +163,9 @@ class StandartController extends BaseController
             }
         }//upload
 
+        //Cria o objreto da categoria
+        $data = $this->model->find($id);
+
         // Altera os dados da categoria
         $updateCategory = $data->update($dataForm);
 
@@ -187,39 +180,36 @@ class StandartController extends BaseController
     }//update
 
     /**
-     * Remove the specified resource from storage.
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id){
+    public function show($id){
 
-        $data = $this->model->find($id);        
+        $data = $this->model->find($id);
 
-        if($data){
-            $delete = $data->delete();
-        }
+        $title = "{$this->name}: {$data->title}";
 
-        if($delete) {
-            return redirect()->route("{$this->route}.index")
-                             ->with(['success' => "Arquivo excluido com suceso!!!"]);
-        } else {
-            return redirect()->route("{$this->route}.edit", ['id' => $id])
-                             ->withErrors(['errors' => "Falha ao excluir o arquivo, tente novamente!"]);
-        }
-    }//destroy
+        return view("{$this->view}.show", [
+            'data'   => $data,
+            'title' => $title
+        ]);
+    }//show
 
     public function search(Request $request) {
         $dataForm = $request->except('_token');    
 
         //Filtra as categorias
-        $data = $this->model->where('name', 'LIKE', "%{$dataForm['key-search']}%")
+        $data = $this->model->where('title', 'LIKE', "%{$dataForm['key-search']}%")
+                            ->orwhere('redline', 'LIKE', "%{$dataForm['key-search']}%")
+                            ->orwhere('description', 'LIKE', "%{$dataForm['key-search']}%")
                             ->paginate($this->totalPage);
 
-        $title = "Pesquisa de categorias";                    
+        $title = "Pesquisa de Postss";                    
 
         return view("{$this->view}.index",[
-            'cats'    => $data,
+            'data'     => $data,
             'dataForm' => $dataForm,
             'title'    => $title
         ]);          

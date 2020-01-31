@@ -24,13 +24,14 @@ class CreatePostsTable extends Migration
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             
-            $table->string('title');
-            $table->string('redline');
+            $table->string('title')->unique();
+            $table->string('redline')->unique();
             $table->text('description');
             $table->date('date');
             $table->time('hour');
             $table->boolean('featured')->default(false);
-            $table->enum('status', ['A', 'R'])->default('A')->comment('A-> Ativo Postado, R-> Rascunho not posted');
+            $table->enum('status', ['A', 'R'])->default('R')->comment('A-> Ativo Postado, R-> Rascunho not posted');
+            $table->string('image');
             $table->timestamps();            
         });
     }

@@ -9,6 +9,15 @@ Route::group(['prefix' => 'painel', 'middleware' => 'auth'], function() {
     //Routes Categories
     Route::any('categorias/pesquisar', 'painel\CategoryController@search')->name('categorias.search');
     Route::resource('categorias', 'Painel\CategoryController');
+
+    //Routes Posts
+    Route::any('posts/pesquisar', 'painel\PostController@search')->name('posts.search');
+    Route::resource('posts', 'Painel\PostController');
+    
+    //Route Profile User
+    Route::get('perfil', 'Painel\UserController@showProfile')->name('profile');
+    Route::post('perfil/{id}', 'Painel\UserController@updateProfile')->name('profile.update');
+    
     Route::get('/', 'Painel\PainelController@index');
 });
 /*** End Route Panel*/ 
@@ -30,6 +39,7 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 /******************************************************************
  * Rotas de Autenticação
  ******************************************************************/
+
 
  /**Route Site*/
 Route::get('/', 'Site\SiteController@index');

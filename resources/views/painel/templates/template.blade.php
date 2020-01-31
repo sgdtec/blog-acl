@@ -46,6 +46,13 @@
 					Categorias
 				</a>
 			</li>
+
+			<li>
+			<a href="{{url('/painel/posts')}}">
+					<i class="fa fa-file-text" aria-hidden="true"></i>
+					Posts
+				</a>
+			</li>
 		</ul>
 	</div>
 
@@ -56,12 +63,16 @@
 		
 		<div class="dropdown user-dash">
 		  <div class="dropdown-toggle" id="dropDownCuston" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-          <img src="{{url('assets/painel/imgs/user-carlos-ferreira.png')}}" alt="Carlos Ferreira" class="user-dashboard img-circle">
-		    <p class="user-name">Nome User</p>
+			@if (auth()->user()->image != '' && file_exists(public_path('assets/uploads/users/'.auth()->user()->image)))
+			   <img src="{{url('assets/uploads/users/'.auth()->user()->image)}}" alt="{{auth()->user()->name}}" class="user-dashboard img-circle">
+			@else
+		  <img src="{{url('assets/painel/imgs/no-profile.png')}}" alt="{{auth()->user()->name}}" class="user-dashboard img-circle">
+			@endif  
+		  <p class="user-name">{{auth()->user()->name}}</p>
 		    <span class="caret"></span>
 		  </div>
 		  <ul class="dropdown-menu dp-menu" aria-labelledby="dropDownCuston">
-		    <li><a href="#">Perfil</a></li>
+		  <li><a href="{{route('profile')}}">Perfil</a></li>
 		  <li><a href="{{route('logout')}}">Logout</a></li>
 		  </ul>
 		</div>
@@ -83,11 +94,13 @@
 	$(function(){
 		setTimeout("$('.hide-msg').fadeOut();", 3000);
 	});
-
 </script>
 
 
-	<!-- jS Bootstrap -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- jS Bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+@stack('scripts')
+
 </body>
 </html>

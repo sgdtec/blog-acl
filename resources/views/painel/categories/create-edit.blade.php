@@ -3,11 +3,12 @@
 @section('content')
 
 <div class="bred">
-<a href="{{url('/painel/categorias') }}" class="bred">Home  ></a }}> <a href="{{route('categorias.create')}}" class="bred">Categorias</a>
+    <a href="{{url('/painel/categorias') }}" class="bred">Home  ></a }}> 
+    <a href="{{route('categorias.create')}}" class="bred">Categorias</a>
 </div>
 
 <div class="title-pg">
-<h1 class="title-pg">Gestão de Categorias: {{$cat->name ?? 'Novo'}}</h1>
+<h1 class="title-pg">Gestão de Categorias: {{$data->name ?? 'Novo'}}</h1>
 </div>
 
 <div class="content-din">
@@ -19,8 +20,8 @@
         </div>        
     @endif
 
-    @if (isset($cat))
-        {!! Form::model($cat, ['route' => ['categorias.update', $cat->id], 'class' => 'form form-search form-ds', 'files' => true, 'method' => 'PUT']) !!}
+    @if (isset($data))
+        {!! Form::model($data, ['route' => ['categorias.update', $data->id], 'class' => 'form form-search form-ds', 'files' => true, 'method' => 'PUT']) !!}
     @else
         {!! Form::open(['route' => 'categorias.store', 'class' => 'form form-search form-ds', 'files' => true]) !!}
     @endif
@@ -47,3 +48,8 @@
     {!! Form::close() !!}
 </div><!--Content Dinâmico-->
 @endsection()
+
+@push('scripts')
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>tinymce.init({selector:'textarea'});</script>
+@endpush
