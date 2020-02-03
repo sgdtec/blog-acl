@@ -1,4 +1,4 @@
-@extends('painel.templates.template')
+@extends('adminlte::page')
 
 @section('content')
 
