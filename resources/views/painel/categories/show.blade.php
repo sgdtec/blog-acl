@@ -21,7 +21,7 @@
 
     <h2><strong>Nome:</strong>{{$data->name}}</h2>
     <h2><strong>Url:</strong>{{$data->url}}</h2>
-    <h2><strong>Descrição:</strong>{{$data->description}}</h2>
+    <h2><strong>Descrição:</strong>{!!$data->description!!}</h2>
 
     {!! Form::open(['route' => ['categorias.destroy', $data->id], 'class' => 'form form-search form-ds', 'method' => 'DELETE']) !!}
         <div class="form-group">

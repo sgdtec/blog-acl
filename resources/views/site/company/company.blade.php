@@ -11,7 +11,7 @@
 	</h2>
 
 	<div class="col-md-6">
-		<img src="{{url('assets/portal/imgs/empresa-especializati.jpg')}}" alt="EspecializaTi" class="company">
+		<img src="{{url('assets/painel/imgs/empresa-especializati.jpg')}}" alt="EspecializaTi" class="company">
 	</div>
 	<div class="col-md-6 text-company text-justify">
 		<p class="text-company-esp">Temos a missão social de ajudar ao máximo cada pessoa que sonha em se tornar 

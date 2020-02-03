@@ -5,7 +5,6 @@ img{max-width: 100%;}
 .top{
     background: #21A999;
     padding: 40px 0px;
-    margin: 0px;
 }
 div.logo{
     /* max-width: 300px; */
@@ -196,6 +195,7 @@ img.company{
     border: none;
     color: #FFF;
     font-weight: bold;
+    margin-top: 15px;
 }
 .form-contact button:hover{opacity: 0.8;}
 .category{float: left; width: 100%; padding: 40px 0px;}

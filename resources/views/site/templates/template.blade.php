@@ -60,14 +60,9 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categorias <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-				@foreach ( as )
-					
+				@foreach ($categories as $category )
+				    <li><a href="{{url("/categoira/{$category->url}")}}">{{$category->url}}</a></li>
 				@endforeach
-                  <li><a href="?pg=categoria">PHP</a></li>
-                  <li><a href="?pg=categoria">JavaScript</a></li>
-                  <li><a href="?pg=categoria">jQuery</a></li>
-                  <li><a href="?pg=categoria">Ajax</a></li>
-                  <li><a href="?pg=categoria">SEO</a></li>
                 </ul>
               </li>
 
