@@ -3,13 +3,24 @@
 @section('content') 
 
 <div class="slide">
+    @foreach ($dataPost as $post)
+    <article class="img-small col-md-12 col-sm-6 col-xm-12">
+        <a href="{{url('/tutorial/{$post->url}')}}" title="{{ $post->title }}">
+            <img src="{{ url("assets/uploads/posts/{$post->image}") }}" alt="{{ $post->image }}" class="img-slide-small">
+
+                <h1 class="text-slide">
+                    {{ $post->title }}
+                </h1>
+            </a>
+        </article>
+    @endforeach
     <div class="col-md-8">
         <article class="img-big">
             <a href="" title="">
             <img src="{{ url('assets/site/imgs/img1.jpg') }}" alt="" class="img-slide-big">
 
                 <h1 class="text-slide">
-                    Uma nova maneira de trabalhar com HTML5 - Acesse o Curso HTML5
+                   1111Uma nova maneira de trabalhar com HTML5 - Acesse o Curso HTML5
                 </h1>
             </a>
         </article>

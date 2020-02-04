@@ -131,11 +131,14 @@ class PostController extends StandartController {
         //valida os Dados
         $this->validate($request, $this->model->rules($id));
 
+        //Pega todos os dados do formulário
+        $dataForm = $request->all();
+
         ///Recebendo os Dados do Form
         $data = $this->model->find($id);
 
         //Pegando se o checkbox está clicado
-        $dataForm['featured'] = isset($dataForm['featured']) ? true : false;
+        $dataForm['featured'] = isset( $dataForm['featured'] ) ? true : false;
 
         //Verifica se existe uma imagem setada no Form
         if($this->upload && $request->hasFile($this->upload['name'])) {
