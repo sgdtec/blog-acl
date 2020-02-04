@@ -53,7 +53,7 @@
 
         <div class="form-group">
             <label>Descrição:</label>
-            {!! Form::textarea('description', null, ['placeholder' => 'Descrição breve da Categoria', 'class' => 'form-control']) !!}
+            {!! Form::textarea('description', null, ['placeholder' => 'Descrição breve da Categoria', 'class' => 'form-control bodyPost']) !!}
         </div>
         
         <div class="form-group">
@@ -81,6 +81,16 @@
 @endsection()
 
 @push('scripts')
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>tinymce.init({selector:'textarea'});</script>
+    <script src="https://cdn.tiny.cloud/1/aw1c2csvf3e5hfkz8a0p1eiyzvanfvm9yv1hqs98lgloenv6/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+    tinymce.init({       
+       selector:'textarea.bodyPost',
+       height: 200,
+       menubar: false,
+       plugins: ['link', 'table','image', 'autoresize', 'lists'],
+       toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | table | link image | bullist numlist '
+
+
+    });
+    </script>
 @endpush

@@ -40,12 +40,11 @@
             <th>Descrição</th>
             <th width="200">Ações</th>
         </tr>
-
         @forelse ($data as $cat)
         <tr>
-            <td>{{$cat>name}}</td>
-            <td>{{$cat>url}}</td>
-            <td>{{$cat>description}}</td>
+            <td>{{$cat->name}}</td>
+            <td>{{$cat->url}}</td>
+            <td>{!!$cat->description!!}</td>
             <td>
                 <a href="{{route('categorias.edit', $cat->id)}}" class="edit"><span class="glyphicon glyphicon-pencil"></span> Edite</a>
                 <a href="{{route('categorias.show', $cat->id)}}" class="delete"><span class="glyphicon glyphicon-eye-open"></span> View</a>

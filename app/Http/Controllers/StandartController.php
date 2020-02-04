@@ -119,12 +119,13 @@ class StandartController extends BaseController
      * @return \Illuminate\Http\Response
      */
     public function edit($id){
+
         $data = $this->model->find($id);
 
         $title = "Editar {$this->name}: {$data->name}";
 
         return view("{$this->view}.create-edit", [
-            'cat'   => $data,
+            'data'   => $data,
             'title' => $title
         ]);
     }//edit

@@ -42,5 +42,7 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 
  /**Route Site*/
+Route::get('empresa', 'Site\SiteController@company')->name('company');
+Route::get('contato', 'Site\SiteController@contact')->name('contact');
 Route::get('/', 'Site\SiteController@index');
 /**End Route Site*/
