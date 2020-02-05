@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use Illuminate\Support\Str;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -34,5 +35,9 @@ class Posts extends Model {
        ];
     }//rules
 
+    //Limitando a quantidade de palavras no post.
+    public function getDescriptionAttribute($value) {
+      return str::limit($value, 200, '...');
+    }
 
 };
