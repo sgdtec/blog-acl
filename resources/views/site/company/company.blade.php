@@ -1,7 +1,6 @@
 @extends('site.templates.template')
 
 @section('content')
-
 <div class="conpany text-center">
 	<h1 class="title">
 		Sobre a EspecializaTi
@@ -24,5 +23,4 @@
 		<p>Possuímos uma metodologia de ensino diferenciada, pois aplicamos conceitos práticos que são úteis para o dia a dia de qualquer programador web. Nosso foco é ensinar como aplicar conhecimentos em funcionalidades do mundo real.</p>
 	</div>
 </div>
-
 @endsection
