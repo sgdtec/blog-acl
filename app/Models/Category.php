@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Posts;
 
 class Category extends Model
 {
@@ -20,5 +21,10 @@ class Category extends Model
             'description' => 'required|min:3|max:200',
             'image'       => 'image'
         ];
+    }//rules
+
+    //Trazendo os Posts pela categoria...
+    public function posts() {
+        return $this->hasMany(Posts::class);
     }
 }

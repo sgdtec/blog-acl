@@ -42,6 +42,8 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 
  /**Route Site*/
+Route::get('/tutorial/{url}', 'Site\SiteController@post')->name('post');
+Route::get('/categoria/{url}', 'Site\SiteController@category');
 Route::get('empresa', 'Site\SiteController@company')->name('company');
 Route::get('contato', 'Site\SiteController@contact')->name('contact');
 Route::get('/', 'Site\SiteController@index');

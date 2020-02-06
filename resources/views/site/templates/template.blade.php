@@ -1,3 +1,5 @@
+@inject('categories', 'App\Models\Category')
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -60,8 +62,8 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categorias <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-				@foreach ($categories as $category )
-				    <li><a href="{{url("/categoira/{$category->url}")}}">{{$category->url}}</a></li>
+				@foreach ($categories->all() as $category)
+				    <li><a href="{{url("/categoria/{$category->url}")}}">{{$category->url}}</a></li>
 				@endforeach
                 </ul>
               </li>

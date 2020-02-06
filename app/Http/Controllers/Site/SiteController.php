@@ -9,6 +9,7 @@ use App\Models\Posts;
 
 class SiteController extends Controller {
 
+    private $totalPage = 6;
     private $category;
     private $post;
 
@@ -20,7 +21,7 @@ class SiteController extends Controller {
     public function index(){
 
         $title = 'Blog Blingo!';
-        $categories = $this->category->all();
+
         //Pegando os posts marcados como destaque
         $dataPost = $this->post->where('featured', true)
                                 ->limit(3)
@@ -28,11 +29,10 @@ class SiteController extends Controller {
                                 ->get();
 
         //Pegando os posts
-        $posts = $this->post->orderBy('date','DESC')->paginate(5);
+        $posts = $this->post->orderBy('date','DESC')->paginate($this->totalPage);
 
         return view('site.home.index', [
             'title' => $title,
-            'categories' => $categories,
             'dataPost' => $dataPost,
             'posts' => $posts
         ]);
@@ -41,22 +41,50 @@ class SiteController extends Controller {
     public function company() {
 
         $title = 'Blingo Compania!';
-        $categories = $this->category->all();
+
+        dd($contact);
 
         return view('site.company.company', [
             'title' => $title,
-            'categories' => $categories
         ]);
     }//company
 
     public function contact() {
 
         $title = 'Blingo Contato!';
-        $categories = $this->category->all();
 
         return view('site.contact.contact', [
             'title' => $title,
-            'categories' => $categories
         ]);
     }//contact
+
+    public function category($url) {
+
+        $category =  $this->category->where('url', $url)->get()->first();
+
+        $title = "Categoria {$category->name} - Blingo!";
+        $posts = $category->posts()->paginate($this->totalPage);
+
+        return view('site.category.category', [
+            'category' => $category,
+            'listPost' => $posts,
+            'title'    => $title
+        ]);
+    }//category
+
+    public function post($url) {
+        $post = $this->post->where('url', $url)->get()->first();
+
+        $title = "{$post->title} - Blingo!";
+
+        //Traz os posts relacionados da categoria
+        $postRel = $this->post->where('id', '>', $post->id)->limit(4)->get();
+
+        return view('site.post.post', [
+            'post'    => $post,
+            'title'   => $title,
+            'postRel' => $postRel
+        ]);
+
+    }//post
 }

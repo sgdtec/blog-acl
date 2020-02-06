@@ -25,6 +25,7 @@ class CreatePostsTable extends Migration
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             
             $table->string('title')->unique();
+            $table->string('url')->unique();
             $table->string('redline')->unique();
             $table->text('description');
             $table->date('date');
