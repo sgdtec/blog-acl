@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Support\Str;
+use App\User;
 
+use Carbon\Carbon;
+use App\Models\PostView;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
 class Posts extends Model {
@@ -38,6 +41,16 @@ class Posts extends Model {
     //Limitando a quantidade de palavras no post.
     public function getDescriptionAttribute($value) {
       return str::limit($value, 200, '...');
+    }
+   
+    //Carrega os posts do criador do post
+    public function user() {
+         return $this->belongsTo(User::class);
+    }
+
+    //Trazendo a quantidade de visualizações do post
+    public function views() {
+       return $this->hasMany(PostView::class);
     }
 
 };

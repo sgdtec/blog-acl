@@ -48,7 +48,7 @@
                         {!! $listPost->description !!}
                     </p>
 
-                    <a class="btn-post" href="{{url("/artigo/{$listPost->redline}")}}">Ir <span class="glyphicon glyphicon-chevron-right"></span></a>
+                    <a class="btn-post" href="{{url("/tutorial/{$listPost->url}")}}">Ir <span class="glyphicon glyphicon-chevron-right"></span></a>
                 </div>
             </article>
         @endforeach

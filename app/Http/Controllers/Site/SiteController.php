@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Site;
 
+use App\Models\Posts;
+use App\Models\Category;
+use App\Events\PostViewed;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
-use App\Models\Posts;
 
 class SiteController extends Controller {
 
@@ -73,6 +74,7 @@ class SiteController extends Controller {
     }//category
 
     public function post($url) {
+
         $post = $this->post->where('url', $url)->get()->first();
 
         $title = "{$post->title} - Blingo!";
@@ -80,10 +82,17 @@ class SiteController extends Controller {
         //Traz os posts relacionados da categoria
         $postRel = $this->post->where('id', '>', $post->id)->limit(4)->get();
 
+        //Author do Post
+        $author = $post->user;
+
+        //Comecando o evento para atualizar as views do post
+        event(new PostViewed($post)); 
+
         return view('site.post.post', [
             'post'    => $post,
             'title'   => $title,
-            'postRel' => $postRel
+            'postRel' => $postRel,
+            'author'  => $author
         ]);
 
     }//post

@@ -13,7 +13,8 @@
 				</div>
 				<div class="description-post-pg text-justify">
 					<p class="details-post">
-						<span>Autor:</span> Carlos Ferreira / <span>Data publicação</span>: <time datetime="">12/12/2017</time>	
+					<span>Autor:</span> {{$author->name}} / <span>Data publicação</span>: <time datetime="{{$post->date}}{{$post->hour}}">{{ \Carbon\Carbon::parse($post->date)->format('d/m/Y')}}</time>
+					/ <span>Views:</span> {{ $post->views()->count() }} <span>	
 					</p>
 
 					<h2 class="title-post-pg">{{$post->title}}</h2>
@@ -83,23 +84,23 @@
 		@include('site.includes.sidebar')
 	</section>
 
-
-	<section class="post-relation">
-		<h1 class="title-post-rel">Posts Relacionados:</h1>
-
-		@foreach ( $postRel as $post )
-            
-			<article class="post-rel col-md-3 col-xm-6 col-sm-12">
-				<a href="{{route('post', $post->url)}}">
-					<div class="image-post text-center">
-						<img src="{{url("assets/uploads/posts/{$post->image}")}}" alt="{{$post->title}}}}" class="img-post">
-					</div>
-					<div class="description-post">
-						<h2 class="title-post-rel-list">{{$post->title}}</h2>
-					</div>
-				</a>
-			</article>
-        @endforeach
-	</section>
+	@if (isset($postRel) && empty($postRel))				
+		<section class="post-relation">
+			<h1 class="title-post-rel">Posts Relacionados:</h1>
+			
+			@foreach ( $postRel as $post )		
+				<article class="post-rel col-md-3 col-xm-6 col-sm-12">
+					<a href="{{route('post', $post->url)}}">
+						<div class="image-post text-center">
+							<img src="{{url("assets/uploads/posts/{$post->image}")}}" alt="{{$post->title}}}}" class="img-post">
+						</div>
+						<div class="description-post">
+							<h2 class="title-post-rel-list">{{$post->title}}</h2>
+						</div>
+					</a>
+				</article>
+			@endforeach
+		</section>
+	@endif
 </div>
 @endsection
