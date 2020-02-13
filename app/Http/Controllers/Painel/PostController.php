@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Painel;
 
-use App\Models\Posts;
+use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\StandartController;
@@ -15,7 +15,7 @@ class PostController extends StandartController {
     protected $route  = 'posts';
     protected $upload = ['name' => 'image' , 'path' => 'posts'];
 
-    public function __construct(Posts $post) {
+    public function __construct(Post $post) {
 
         $this->model = $post;
     }//__construct

@@ -8,7 +8,9 @@ use App\Models\PostView;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
-class Posts extends Model {
+class Post extends Model {
+
+    protected $table = ['posts'];
 
     protected $fillable = [
        'title', 

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Posts;
+use App\Models\Post;
 
 class Category extends Model
 {
@@ -25,6 +25,6 @@ class Category extends Model
 
     //Trazendo os Posts pela categoria...
     public function posts() {
-        return $this->hasMany(Posts::class);
+        return $this->hasMany(Post::class);
     }
 }
