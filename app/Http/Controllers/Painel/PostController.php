@@ -195,7 +195,7 @@ class PostController extends StandartController {
         $title = "{$this->name}: {$data->title}";
 
         return view("{$this->view}.show", [
-            'data'   => $data,
+            'data'  => $data,
             'title' => $title
         ]);
     }//show
@@ -209,7 +209,7 @@ class PostController extends StandartController {
                             ->orwhere('description', 'LIKE', "%{$dataForm['key-search']}%")
                             ->paginate($this->totalPage);
 
-        $title = "Pesquisa de Postss";                    
+        $title = "Pesquisa de Posts";                    
 
         return view("{$this->view}.index",[
             'data'     => $data,

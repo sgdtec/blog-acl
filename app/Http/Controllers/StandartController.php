@@ -107,7 +107,7 @@ class StandartController extends BaseController
         $title = "{$this->name}: {$data->name}";
 
         return view("{$this->view}.show", [
-            'data'   => $data,
+            'data'  => $data,
             'title' => $title
         ]);
     }//show
@@ -125,7 +125,7 @@ class StandartController extends BaseController
         $title = "Editar {$this->name}: {$data->name}";
 
         return view("{$this->view}.create-edit", [
-            'data'   => $data,
+            'data'  => $data,
             'title' => $title
         ]);
     }//edit
@@ -220,7 +220,7 @@ class StandartController extends BaseController
         $title = "Pesquisa de categorias";                    
 
         return view("{$this->view}.index",[
-            'cats'    => $data,
+            'cats'     => $data,
             'dataForm' => $dataForm,
             'title'    => $title
         ]);          

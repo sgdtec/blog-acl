@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Posts;
+use App\Models\Post;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -22,7 +22,7 @@ class PostViewed
      *
      * @return void
      */
-    public function __construct(Posts $post)
+    public function __construct(Post $post)
     {
         $this->post = $post;
     }
