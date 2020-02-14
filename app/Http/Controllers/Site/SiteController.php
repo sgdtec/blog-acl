@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Site;
 
-use App\Models\Posts;
+use App\Models\Post;
 use App\Models\Category;
 use App\Events\PostViewed;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ class SiteController extends Controller {
     private $category;
     private $post;
 
-    public function __construct(Category $category, Posts $post) {
+    public function __construct(Category $category, Post $post) {
         $this->category = $category;
         $this->post = $post;
     }
@@ -33,9 +33,9 @@ class SiteController extends Controller {
         $posts = $this->post->orderBy('date','DESC')->paginate($this->totalPage);
 
         return view('site.home.index', [
-            'title' => $title,
+            'title'    => $title,
             'dataPost' => $dataPost,
-            'posts' => $posts
+            'posts'    => $posts
         ]);
     }//index
 
