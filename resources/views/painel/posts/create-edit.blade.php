@@ -27,13 +27,13 @@
     @endif
 
         <div class="form-group">
-            <label>Titulo:</label>
+            {!! Form::label('Titulo:') !!}
             {!! Form::text('title', null, ['placeholder' => 'Titulo do Post', 'class' => 'form-control']) !!}
-        </div>
+        </div>      
 
         <div class="form-group">
-            <label>RedLine:</label>
-            {!! Form::text('redline', null, ['placeholder' => 'Redline', 'class' => 'form-control']) !!}
+            {!! Form::label('Redline:') !!}
+            {!! Form::textarea('redline', null, ['rows' => '2', 'maxlength' => '190', 'placeholder' => 'Redline', 'class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">

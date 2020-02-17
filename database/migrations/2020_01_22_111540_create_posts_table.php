@@ -32,7 +32,7 @@ class CreatePostsTable extends Migration
             $table->time('hour');
             $table->boolean('featured')->default(false);
             $table->enum('status', ['A', 'R'])->default('R')->comment('A-> Ativo Postado, R-> Rascunho not posted');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->timestamps();            
         });
     }

@@ -10,11 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model {
 
-    protected $table = ['posts'];
-
     protected $fillable = [
        'title', 
        'redline',
+       'url',
        'user_id', 
        'category_id', 
        'description', 
@@ -30,7 +29,7 @@ class Post extends Model {
 
        return [
             'title'       => "required|min:3|max:100,unique:posts,title,{$id},id",
-            'redline'     => "required|min:3|max:100,unique:posts,redline,{$id},id",
+            'redline'     => "required|min:3|max:190,unique:posts,redline,{$id},id",
             'category_id' => 'required', 
             'description' => 'required|min:50|max:6000', 
             'date'        => 'required|date', 
@@ -41,9 +40,9 @@ class Post extends Model {
     }//rules
 
     //Limitando a quantidade de palavras no post.
-    public function getDescriptionAttribute($value) {
-      return str::limit($value, 200, '...');
-    }
+    //public function getDescriptionAttribute($value) {
+     // return str::limit($value, 200, '...');
+    //}
    
     //Carrega os posts do criador do post
     public function user() {

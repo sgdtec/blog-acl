@@ -36,20 +36,19 @@
     <table class="table table-striped">
         <tr>
             <th>Nome</th>
+            <th>Modo</th>
             <th width="200">Ações</th>
         </tr>
-
-        @forelse ($data as $post)       
-        <tr>
-            <td>{{$post->title}}</td>
-            <td>
-                <a href="{{route('posts.edit', $post->id)}}" class="edit"><span class="glyphicon glyphicon-pencil"></span> Edite</a>
-                <a href="{{route('posts.show', $post->id)}}" class="delete"><span class="glyphicon glyphicon-eye-open"></span> View</a>
-            </td>
-        </tr>
-    @empty
-        <p>Nenhum post cadastrado!</p>
-    @endforelse
+        @foreach ($data as $post)       
+            <tr>
+                <td>{{$post->title}}</td>
+                <td>{{$post->status == 'A' ? 'Postado' : 'Rascunho'}}</td>
+                <td>
+                    <a href="{{route('posts.edit', $post->id)}}" class="edit"><span class="glyphicon glyphicon-pencil"></span> Edite</a>
+                    <a href="{{route('posts.show', $post->id)}}" class="delete"><span class="glyphicon glyphicon-eye-open"></span> View</a>
+                </td>
+            </tr>
+        @endforeach
     </table>
 
     {!! $data->appends(isset($dataForm) ? $dataForm : '')->links() !!}

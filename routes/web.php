@@ -10,6 +10,7 @@ Route::group(['prefix' => 'painel', 'middleware' => 'auth'], function() {
     Route::any('categorias/pesquisar', 'painel\CategoryController@search')->name('categorias.search');
     Route::resource('categorias', 'Painel\CategoryController');
 
+    
     //Routes Posts
     Route::any('posts/pesquisar', 'painel\PostController@search')->name('posts.search');
     Route::resource('posts', 'Painel\PostController');

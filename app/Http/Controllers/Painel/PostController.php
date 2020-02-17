@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Painel;
 
 use App\Models\Post;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\StandartController;
 
@@ -49,6 +50,9 @@ class PostController extends StandartController {
 
        //Recebendo os Dados da categoria
        $dataForm = $request->all();
+
+       //Criando Url amigavel
+       $dataForm['url'] = Str::slug($dataForm['title'], '-');
        
        //Pegando se o checkbox está clicado
        $dataForm['featured'] = isset($dataForm['featured']) ? true : false;
@@ -75,7 +79,7 @@ class PostController extends StandartController {
                       ->withErrors(['errors' => 'Erro ao fazer o upload!'])
                       ->withInput();
         }
-
+        
         // Insert os dados da categoria
         $insertCategory = $this->model->create($dataForm);
 

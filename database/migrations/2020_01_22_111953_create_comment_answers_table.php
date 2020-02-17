@@ -20,10 +20,6 @@ class CreateCommentAnswersTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
            
-            /** Relacionamento with Posts */
-            $table->unsignedBigInteger('post_id');
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
-            
             /** Relacioamento with Comments */
             $table->unsignedBigInteger('comment_id');
             $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade');

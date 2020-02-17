@@ -43,8 +43,6 @@ class SiteController extends Controller {
 
         $title = 'Blingo Compania!';
 
-        dd($contact);
-
         return view('site.company.company', [
             'title' => $title,
         ]);
