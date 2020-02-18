@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site;
 
 use App\Models\Post;
+use App\Models\Comment;
 use App\Models\Category;
 use App\Events\PostViewed;
 use Illuminate\Http\Request;
@@ -94,4 +95,24 @@ class SiteController extends Controller {
         ]);
 
     }//post
+
+    public function commentPost(Request $request) {
+        
+        $dataForm = $request->all();
+
+        $comment = new Comment;
+        $comment->user_id     = ( auth()->check() ) ? auth()->user()->id : 1;
+        $comment->post_id     = $dataForm['post'];
+        $comment->name        = $dataForm['name'];
+        $comment->email       = $dataForm['email'];
+        $comment->description = $dataForm['description'];
+        $comment->date        = date('Y-m-d');
+        $comment->hour        = date('H:i:s');
+        $comment->status      = 'R';
+
+        if( $comment->save() )
+            return '1';
+        else 
+            return 'Falha ao cadastrar comentário, tente novamente...';
+    }
 }

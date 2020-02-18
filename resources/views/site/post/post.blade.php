@@ -25,13 +25,19 @@
 
 			<article class="post comments">
 				<h2 class="title-comment">Deixe o seu comentário</h2>
-				<form class="form form-contact form-comment">
-					<input type="name" name="nome" placeholder="Nome:">
-					<input type="email" name="email" placeholder="E-mail:">
-					<textarea name="descricao" placeholder="Descrição"></textarea>
 
+				{!! Form::open(['route' => 'comment', 'class' => 'form form-contact form-comment']) !!}
+					{!! Form::hidden('post', $post->id) !!}
+					{!! Form::text('name', null, ['placeholder' => 'Nome:']) !!}
+					{!! Form::email('email', null, ['placeholder' => 'E-mail:']) !!}
+					{!! Form::textarea('description', null, ['placeholder' => 'Comente aqui...']) !!}
+					
 					<button>Enviar</button>
-				</form>
+					<div class="preloader" style="display: none;">Enviando Comentário...</div>
+					<div class="alert alert-success" style="display: none;">Comentário enviado com sucesso!!!</div>
+					<div class="alert alert-danger" style="display: none;"></div>
+				{!! Form::close() !!}
+
 
 				<div class="comment">
 					<div class="col-md-2 text-center">
@@ -104,3 +110,58 @@
 	@endif
 </div>
 @endsection
+
+@push('scripts')
+	<script>
+		$(function(){
+			$('form.form-comment').submit(function(){
+
+				$('.alert-success').hide();
+				$('.alert-danger').hide();
+
+				var dataForm = $(this).serialize();
+
+				$.ajax({
+
+					url: '/comment-post',
+					method: 'POST',
+					data: dataForm,
+					beforeSend: startPreloader()
+
+				}).done(function(data){
+					
+					if ( data == '1') {
+						$('.alert-success').fadeIn();
+					} else {
+						$('.alert-danger').fadeIn();						
+						$('.alert-danger').html(data);
+					}
+
+					endPreloader()
+					hideMsg();
+
+				}).fail(function() {
+					alert('Falha ao enviar os dados...')
+					endPreloader()
+				});
+				
+				return false;
+			});
+
+			function startPreloader() {
+				$('.preloader').show());
+			}
+
+			function endPrealoader() {
+				$('.preloader').hide();
+			}
+
+			function hideMsg() {
+
+				$('form.form-comment')[0].reset();
+
+				setTimeout("$('.alert').hide();", 3000);
+			}
+		});
+	</script>
+@endpush
