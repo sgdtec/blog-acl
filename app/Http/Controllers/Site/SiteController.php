@@ -26,9 +26,9 @@ class SiteController extends Controller {
 
         //Pegando os posts marcados como destaque
         $dataPost = $this->post->where('featured', true)
-                                ->limit(3)
-                                ->orderBy('created_at','DESC')
-                                ->get();
+                               ->limit(3)
+                               ->orderBy('created_at','DESC')
+                               ->get();
 
         //Pegando os posts
         $posts = $this->post->orderBy('date','DESC')->paginate($this->totalPage);
@@ -110,9 +110,10 @@ class SiteController extends Controller {
         $comment->hour        = date('H:i:s');
         $comment->status      = 'R';
 
-        if( $comment->save() )
+        if ($comment->save())
             return '1';
-        else 
+        else
             return 'Falha ao cadastrar comentário, tente novamente...';
-    }
+        
+    }//commentPost
 }

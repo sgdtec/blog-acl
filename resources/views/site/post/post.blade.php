@@ -114,7 +114,8 @@
 @push('scripts')
 	<script>
 		$(function(){
-			$('form.form-comment').submit(function(){
+			$('form.form-comment').submit(function(event){
+				event.preventDefault();
 
 				$('.alert-success').hide();
 				$('.alert-danger').hide();
@@ -122,7 +123,6 @@
 				var dataForm = $(this).serialize();
 
 				$.ajax({
-
 					url: '/comment-post',
 					method: 'POST',
 					data: dataForm,
@@ -144,22 +144,18 @@
 					alert('Falha ao enviar os dados...')
 					endPreloader()
 				});
-				
-				return false;
 			});
 
 			function startPreloader() {
-				$('.preloader').show());
+				$('.preloader').show();
 			}
 
-			function endPrealoader() {
+			function endPreloader() {
 				$('.preloader').hide();
 			}
 
 			function hideMsg() {
-
 				$('form.form-comment')[0].reset();
-
 				setTimeout("$('.alert').hide();", 3000);
 			}
 		});
