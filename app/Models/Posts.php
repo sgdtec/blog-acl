@@ -4,6 +4,7 @@ namespace App\Models;
 use App\User;
 
 use Carbon\Carbon;
+use App\Models\Comment;
 use App\Models\PostView;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
@@ -52,6 +53,14 @@ class Post extends Model {
     //Trazendo a quantidade de visualizações do post
     public function views() {
        return $this->hasMany(PostView::class);
+    }
+
+    //Trazendo comments dos Posts
+    public function comments() {
+       return $this->hasMany(Comment::class)
+                   ->join('users', 'users.id', '=' , 'comments.user_id')
+                   ->select('comments.id', 'comments.description', 'comments.name', 'users.image as image_user')
+                   ->where('comments.status', 'A');
     }
 
 };

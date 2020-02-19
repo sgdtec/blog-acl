@@ -5,8 +5,7 @@
 <div class="category">
 	
 	<section class="content">
-		<div class="col-md-8">
-			
+		<div class="col-md-8">			
 			<article class="post">
 				<div class="image-post text-center">
 					<img src="{{url("assets/uploads/posts/{$post->image}")}}" alt="{{$post->title}}" class="img-post">
@@ -24,65 +23,68 @@
 			</article><!--End Post-->
 
 			<article class="post comments">
-				<h2 class="title-comment">Deixe o seu comentário</h2>
+				<h2 class="title-comment">
+					Deixe o seu comentário
+					@if (auth()->check())
+						<b>{{auth()->user()->name}}</b>						
+					@endif
+				</h2>
 
 				{!! Form::open(['route' => 'comment', 'class' => 'form form-contact form-comment']) !!}
 					{!! Form::hidden('post', $post->id) !!}
-					{!! Form::text('name', null, ['placeholder' => 'Nome:']) !!}
-					{!! Form::email('email', null, ['placeholder' => 'E-mail:']) !!}
+					@if (auth()->check())
+						{!! Form::hidden('name', auth()->user()->name) !!}
+						{!! Form::hidden('email', auth()->user()->email) !!}
+					@else
+						{!! Form::text('name', null, ['placeholder' => 'Nome:']) !!}
+						{!! Form::email('email', null, ['placeholder' => 'E-mail:']) !!}
+					@endif
+					
 					{!! Form::textarea('description', null, ['placeholder' => 'Comente aqui...']) !!}
 					
 					<button>Enviar</button>
+					
 					<div class="preloader" style="display: none;">Enviando Comentário...</div>
 					<div class="alert alert-success" style="display: none;">Comentário enviado com sucesso!!!</div>
 					<div class="alert alert-danger" style="display: none;"></div>
 				{!! Form::close() !!}
 
+				@foreach ($post->comments as $comment)					
+					<div class="comment">
+						<div class="col-md-2 text-center">
+							@if($comment->image_user != null && file_exists(public_path("assets/uploads/users/{$comment->image_user}")))
+							   <img src="{{url("assets/uploads/users/{$comment->image_user}")}}" alt="{{$comment->name}}" class="user-comment-img img-circle">
+							@else
+								<img src="{{ url('assets/painel/imgs/no-profile.png') }}" alt="{{$comment->name}}" class="user-comment-img img-circle">
+							@endif	
+						</div>
 
-				<div class="comment">
-					<div class="col-md-2 text-center">
-						<img src="imgs/user-carlos-ferreira.png" alt="Carlos Ferreira" class="user-comment-img img-circle">
+						<div class="col-md-10 comment-user">
+							{{ $comment->name }}:
+							<p>{{ $comment->description }}</p>
+						</div>
 					</div>
-					<div class="col-md-10 comment-user">
-						<p>Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica, permanecendo essencialmente inalterado. Se popularizou na década de 60, quando a Letraset lançou decalques contendo passagens de Lorem Ipsum, e mais recentemente quando passou a ser integrado a softwares de editoração eletrônica como Aldus PageMaker.</p>
-					</div>
-				</div>
 
-				<div class="comment">
-					<div class="col-md-2 text-center">
-						<img src="imgs/user-carlos-ferreira.png" alt="Carlos Ferreira" class="user-comment-img img-circle">
-					</div>
-					<div class="col-md-10 comment-user">
-						<p>Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica, permanecendo essencialmente inalterado. Se popularizou na década de 60, quando a Letraset lançou decalques contendo passagens de Lorem Ipsum, e mais recentemente quando passou a ser integrado a softwares de editoração eletrônica como Aldus PageMaker.</p>
-					</div>
-				</div>
-				<div class="reply-comment">
-					<div class="col-md-2 text-center">
-						<img src="imgs/user-carlos-ferreira.png" alt="Carlos Ferreira" class="user-comment-img img-circle">
-					</div>
-					<div class="col-md-10 comment-user">
-						<p>Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica, permanecendo essencialmente inalterado. Se popularizou na década de 60, quando a Letraset lançou decalques contendo passagens de Lorem Ipsum, e mais recentemente quando passou a ser integrado a softwares de editoração eletrônica como Aldus PageMaker.</p>
-					</div>
-				</div>
-				<div class="reply-comment">
-					<div class="col-md-2 text-center">
-						<img src="imgs/user-carlos-ferreira.png" alt="Carlos Ferreira" class="user-comment-img img-circle">
-					</div>
-					<div class="col-md-10 comment-user">
-						<p>Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica, permanecendo essencialmente inalterado. Se popularizou na década de 60, quando a Letraset lançou decalques contendo passagens de Lorem Ipsum, e mais recentemente quando passou a ser integrado a softwares de editoração eletrônica como Aldus PageMaker.</p>
-					</div>
-				</div>
-
-				<div class="comment">
-					<div class="col-md-2 text-center">
-						<img src="imgs/user-carlos-ferreira.png" alt="Carlos Ferreira" class="user-comment-img img-circle">
-					</div>
-					<div class="col-md-10 comment-user">
-						<p>Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica, permanecendo essencialmente inalterado. Se popularizou na década de 60, quando a Letraset lançou decalques contendo passagens de Lorem Ipsum, e mais recentemente quando passou a ser integrado a softwares de editoração eletrônica como Aldus PageMaker.</p>
-					</div>
-				</div>
+					{{-- Reply Comments --}}					
+					@foreach ($comment->answers()->get() as $answer)
+						<div class="reply-comment">
+							<div class="col-md-2 text-center">
+								@if($answer->image_user != null && file_exists(public_path("assets/uploads/users/{$answer->image_user}")))
+								<img src="{{url("assets/uploads/users/{$answer->image_user}")}}" alt="{{$answer->name}}" class="user-comment-img img-circle">
+								@else
+									<img src="{{ url('assets/painel/imgs/no-profile.png') }}" alt="{{$answer->name}}" class="user-comment-img img-circle">
+								@endif	
+						    </div>
+						
+							<div class="col-md-10 comment-user">
+								{{ $answer->name }}:
+								<p>{{ $answer->description }}</p>
+							</div>
+						</div>
+					@endforeach
+					{{-- end Reply Comment --}}					
+				@endforeach
 			</article>
-
 
 		</div><!--POSTS-->
 
@@ -119,7 +121,6 @@
 
 				$('.alert-success').hide();
 				$('.alert-danger').hide();
-
 				var dataForm = $(this).serialize();
 
 				$.ajax({
@@ -128,8 +129,7 @@
 					data: dataForm,
 					beforeSend: startPreloader()
 
-				}).done(function(data){
-					
+				}).done(function(data){					
 					if ( data == '1') {
 						$('.alert-success').fadeIn();
 					} else {
