@@ -19,6 +19,11 @@ Route::group(['prefix' => 'painel', 'middleware' => 'auth'], function() {
     Route::get('perfil', 'Painel\UserController@showProfile')->name('profile');
     Route::post('perfil/{id}', 'Painel\UserController@updateProfile')->name('profile.update');
     
+    //Routes Comments
+    Route::any('comentarios/pesquisar', 'painel\CommentController@search')->name('comments.search');
+    Route::get('comentarios', 'Painel\CommentController@index')->name('painel.comment');
+
+
     Route::get('/', 'Painel\PainelController@index');
 });
 /*** End Route Panel*/ 
