@@ -22,8 +22,8 @@ class StandartController extends BaseController
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $title = "Listagem {$this->name}s";
 
+        $title = "Listagem {$this->name}s";
         $data  = $this->model->paginate($this->totalPage);
         
         return view("{$this->view}.index", [

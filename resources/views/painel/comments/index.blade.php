@@ -29,13 +29,17 @@
     
     <table class="table table-striped">
         <tr>
-            <th>Nome</th>
+            <th>#</th>
+            <th width="120">Nome</th>
+            <th width="100">Data</th>
             <th>Comentário</th>
             <th width="200">Ações</th>
         </tr>
         @foreach ($data as $comment)       
             <tr>
+                <td>{{$comment->id}}</td>                
                 <td>{{$comment->name}}</td>
+                <td>{{$comment->date}}</td>
                 <td>{{$comment->description}}</td>
                 <td>
                     <a href="{{}}" class="delete"><span class="fa fa-reply-all"></span> Responder</a>
