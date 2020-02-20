@@ -4,7 +4,7 @@
 
 <div class="bred">
     <a href="{{url('/painel')}}" class="bred">Home ></a }}>
-    <a href="{{route('painel.comment')}}" class="bred">Comentários</a>
+    <a href="{{route('comments')}}" class="bred">Comentários</a>
 </div>
     
 <div class="title-pg">
@@ -42,13 +42,17 @@
                 <td>{{$comment->date}}</td>
                 <td>{{$comment->description}}</td>
                 <td>
-                    <a href="{{}}" class="delete"><span class="fa fa-reply-all"></span> Responder</a>
+                    <a href="{{url("/painel/comentario/{$comment->id}/respostas")}}" class="delete"><span class="fa fa-reply-all"></span> Responder</a>
                 </td>
             </tr>
         @endforeach
     </table>
 
-    {!! $data->appends(isset($dataForm) ? $dataForm : '')->links() !!}
+    @if( isset($dataForm) )
+       {!! $data->appends($dataForm)->links() !!}
+    @else
+       {!! $data->links() !!}
+     @endif
 
 </div><!--Content Dinâmico-->
 

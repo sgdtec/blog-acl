@@ -17,6 +17,6 @@ class Comment extends Model
     public function answers() {
         return $this->hasOne(CommentAnswer::class)
                     ->join('users', 'users.id', '=', 'comment_answers.user_id')
-                    ->select('comment_answers.description', 'users.image as image_user', 'users.name');
+                    ->select('comment_answers.id','comment_answers.description', 'users.image as image_user', 'users.name');
     }
 }

@@ -21,8 +21,11 @@ Route::group(['prefix' => 'painel', 'middleware' => 'auth'], function() {
     
     //Routes Comments
     Route::any('comentarios/pesquisar', 'painel\CommentController@search')->name('comments.search');
-    Route::get('comentarios', 'Painel\CommentController@index')->name('painel.comment');
-
+    Route::get('comentarios', 'Painel\CommentController@index')->name('comments');
+    Route::get('comentario/{id}/respostas', 'Painel\CommentController@answers');
+    Route::post('comentatio/{id}/answer', 'Painel\CommentController@answerComment')->name('answer.comment');
+    Route::post('comentatio/{id}/destroy', 'Painel\CommentController@destroy')->name('destroy.comment');
+    Route::get('comentatio/{id}/resposta/{idAnswer}/delete', 'Painel\CommentController@destroyAnswer')->name('destroy.answer');
 
     Route::get('/', 'Painel\PainelController@index');
 });
