@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Listeners;
+
+use App\Events\CommentAnswered;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+
+class SendMailCommentAnswered {
+    /**
+     * Create the event listener.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param  CommentAnswer  $event
+     * @return void
+     */
+    public function handle(CommentAnswered $event)
+    {
+        //
+    }
+}

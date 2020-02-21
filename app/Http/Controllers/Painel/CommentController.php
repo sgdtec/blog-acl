@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Painel;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Models\CommentAnswer;
+use App\Events\CommentAnswered;
 use App\Http\Controllers\Controller;
 
 class CommentController extends Controller {
@@ -75,27 +76,26 @@ class CommentController extends Controller {
             'description' => 'required|min:3|max:1000'
         ]);
 
+        $comment = $this->comment->find($id);
+
         $dataForm = $request->all();
         $dataForm['user_id'] = auth()->user()->id;
         $dataForm['date']    = date('Y-m-d');
         $dataForm['hour']    = date('H:i:s');
-       
-        $comment = $this->comment->find($id);
-        $comment->status = 'A';
-        $comment->save();
 
-        $insert =$comment->answers()->create($dataForm);
+        $reply =$comment->answers()->create($dataForm);
 
-        if($insert)
-          return redirect()->back()
+        if($reply) {
+            //Chamando o event para mudar status
+            event(new CommentAnswered($comment, $reply));
+
+           return redirect()->back()
                            ->with(['success' => 'Comentário gravado com sucesso!']);
-        else
+        }
            return redirect()->back()
                             ->withErrors(['errors' => 'Erro ao gravar o comentário...'])
                             ->withInput();
-
-
-
+                          
     }
 
     //Deletando comentário
