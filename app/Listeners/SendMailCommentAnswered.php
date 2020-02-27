@@ -14,8 +14,7 @@ class SendMailCommentAnswered {
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         //
     }
 
