@@ -115,9 +115,6 @@
        height: 200,
        menubar: false,
        plugins: ['link', 'table','image', 'autoresize', 'lists'],
-       toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | table | link image | bullist numlist '
-
-
-    });
+       toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | table | link image | bullist numlist'    });
     </script>
 @endpush
