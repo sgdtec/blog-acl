@@ -94,8 +94,7 @@ class CommentController extends Controller {
         }
            return redirect()->back()
                             ->withErrors(['errors' => 'Erro ao gravar o comentário...'])
-                            ->withInput();
-                          
+                            ->withInput();                          
     }
 
     //Deletando comentário

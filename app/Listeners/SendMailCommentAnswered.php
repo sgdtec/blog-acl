@@ -3,8 +3,10 @@
 namespace App\Listeners;
 
 use App\Events\CommentAnswered;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Mail\MailCommentAnswered;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendMailCommentAnswered {
     /**
@@ -25,6 +27,8 @@ class SendMailCommentAnswered {
      */
     public function handle(CommentAnswered $event)
     {
-        //
+        Mail::send(new MailCommentAnswered($event->comment(), $event->reply()));
+        
+
     }
 }
