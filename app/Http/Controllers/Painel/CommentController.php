@@ -42,8 +42,7 @@ class CommentController extends Controller {
 
             $data = $this->comment->where('status', $dataForm['status'])
                                   ->paginate($this->totalPage);
-        }
-        
+        }        
 
         $title = "Pesquisa de comentários";                    
 
@@ -72,9 +71,7 @@ class CommentController extends Controller {
     public function answerComment(Request $request, $id) {
 
         //Validando o campo 
-        $this->validate($request, [
-            'description' => 'required|min:3|max:1000'
-        ]);
+        $this->validate($request, $this->comment->rulesAnswerComment());
 
         $comment = $this->comment->find($id);
 

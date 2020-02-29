@@ -97,20 +97,18 @@ class SiteController extends Controller {
     }//post
 
     public function commentPost(Request $request) {
+
+        $comment = new Comment;
         
         $dataForm = $request->all();
 
-        $comment = new Comment;
-        $comment->user_id     = ( auth()->check() ) ? auth()->user()->id : 1;
-        $comment->post_id     = $dataForm['post'];
-        $comment->name        = $dataForm['name'];
-        $comment->email       = $dataForm['email'];
-        $comment->description = $dataForm['description'];
-        $comment->date        = date('Y-m-d');
-        $comment->hour        = date('H:i:s');
-        $comment->status      = 'R';
+        $validate = validator($dataForm, $comment->rules());
 
-        if ($comment->save())
+        if($validate->fails()) {
+            return implode($validate->messages()->all("<p>:message</p>"));
+        }
+
+        if ($comment->newComment($dataForm))
             return '1';
         else
             return 'Falha ao cadastrar comentário, tente novamente...';
