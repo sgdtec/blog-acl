@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Site;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Models\Category;
+use App\Mail\SendContact;
 use App\Events\PostViewed;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 
 class SiteController extends Controller {
 
@@ -114,4 +116,35 @@ class SiteController extends Controller {
             return 'Falha ao cadastrar comentário, tente novamente...';
         
     }//commentPost
+
+    public function sendContact(Request $request) {
+
+        $this->validate($request, [
+            'name'    => 'required|min:3|max:100',
+            'email'   => 'required|email|min:3|max:100',
+            'subject' => 'required|min:3|max:100',
+            'message' => 'required|min:3|max:1000'
+        ]);
+
+        $dataForm = $request->all();
+
+        Mail::send(new SendContact($dataForm));
+
+        return redirect('/contato')
+               ->with(['success' => 'E-mail enviado com sucesso, em breve entraremos em contato com você.']);
+    }//sendContact
+
+    public function search(Request $request) {
+
+        $dataForm = $request->except('_token');
+
+        $posts = $this
+                ->post
+                ->where('title', 'LIKE' , "%{$dataForm['key-search']}%")
+                ->orWhere('description', 'LIKE' , "%{$dataForm['key-search']}%")
+                ->orderBy('date', 'ASC')
+                ->paginate($this->totalPage);
+        
+        return view('site.search.search', compact('dataForm', 'posts'));        
+    }
 }

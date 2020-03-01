@@ -51,10 +51,12 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 
  /**Route Site*/
+Route::any('/buscar', 'Site\SiteController@search')->name('search.blog');
 Route::post('/comment-post', 'Site\SiteController@commentPost')->name('comment');
 Route::get('/tutorial/{url}', 'Site\SiteController@post')->name('post');
 Route::get('/categoria/{url}', 'Site\SiteController@category');
 Route::get('empresa', 'Site\SiteController@company')->name('company');
 Route::get('contato', 'Site\SiteController@contact')->name('contact');
+Route::post('contact', 'Site\SiteController@sendContact')->name('contact');
 Route::get('/', 'Site\SiteController@index');
 /**End Route Site*/
