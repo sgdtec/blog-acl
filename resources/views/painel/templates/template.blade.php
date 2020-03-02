@@ -59,7 +59,14 @@
 						<i class="fa fa-comments" aria-hidden="true"></i>
 						Comentários
 					</a>
-				</li>
+			</li>
+
+			<li>
+				<a href="{{url('/painel/perfis')}}">
+					<i class="fa fa-users"></i>
+					Perfis
+				</a>
+			</li>
 		</ul>
 	</div>
 
