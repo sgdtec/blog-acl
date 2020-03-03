@@ -22,7 +22,7 @@
 
     <div class="class-btn-insert">
         <a href="{{route('perfis.create')}}" class="btn-insert">
-            <span class="glyphicon glyphicon-plus"></span>
+            <i class="fa fa-user-plus"></i>
             Cadastrar
         </a>
     </div>
