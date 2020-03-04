@@ -67,6 +67,15 @@
 					Perfis
 				</a>
 			</li>
+
+			<li>
+				<a href="{{url('/painel/permissoes')}}">
+					<i class="fa fa-unlock-alt"></i>
+					Permissões
+				</a>
+			</li>
+			
+
 		</ul>
 	</div>
 

@@ -211,6 +211,7 @@ class StandartController extends BaseController
     }//destroy
 
     public function search(Request $request) {
+        
         $dataForm = $request->except('_token');    
 
         //Filtra as categorias

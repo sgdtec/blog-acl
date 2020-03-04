@@ -16,22 +16,37 @@ Route::group(['prefix' => 'painel', 'middleware' => 'auth'], function() {
     Route::resource('posts', 'Painel\PostController');
     
     //Route Profile User
-    Route::get('perfil', 'Painel\UserController@showProfile')->name('profile');
-    Route::post('perfil/{id}', 'Painel\UserController@updateProfile')->name('profile.update');
+    Route::get('perfil','Painel\UserController@showProfile')->name('profile');
+    Route::post('perfil/{id}','Painel\UserController@updateProfile')->name('profile.update');
     
     //Routes Comments
-    Route::any('comentarios/pesquisar', 'Painel\CommentController@search')->name('comments.search');
+    Route::any('comentarios/pesquisar','Painel\CommentController@search')->name('comments.search');
     Route::get('comentarios', 'Painel\CommentController@index')->name('comments');
-    Route::get('comentario/{id}/respostas', 'Painel\CommentController@answers');
-    Route::post('comentatio/{id}/answer', 'Painel\CommentController@answerComment')->name('answer.comment');
-    Route::post('comentatio/{id}/destroy', 'Painel\CommentController@destroy')->name('destroy.comment');
+    Route::get('comentario/{id}/respostas','Painel\CommentController@answers');
+    Route::post('comentatio/{id}/answer','Painel\CommentController@answerComment')->name('answer.comment');
+    Route::post('comentatio/{id}/destroy','Painel\CommentController@destroy')->name('destroy.comment');
     Route::get('comentatio/{id}/resposta/{idAnswer}/delete', 'Painel\CommentController@destroyAnswer')->name('destroy.answer');
 
     //Routes Profiles ACl
-    Route::any('perfis/pesquisar', 'Painel\PainelController@search')->name('profiles.search');
-    Route::resource('perfis', 'Painel\ProfileController');
+    Route::any('perfil/{id}/usuarios/search','Painel\ProfileController@searchUser')->name('profile.users.search');
+    Route::get('perfil/{id}/usuarios/{userId}/delete', 'painel\ProfileController@deleteUser')->name('profile.user.delete');
+    Route::post('perfil/{id}/usuarios/cadastrar','Painel\ProfileController@usersAddProfile')->name('profile.users.add');
+    Route::get('perfil/{id}/usuarios/cadastrar','Painel\ProfileController@usersAdd')->name('profile.users.add');
+    Route::get('perfil/{id}/usuarios','Painel\ProfileController@users')->name('profile.users');
+    Route::any('perfis/pesquisar','Painel\PainelController@search')->name('profiles.search');
+    Route::resource('perfis','Painel\ProfileController');
 
-    Route::get('/', 'Painel\PainelController@index');
+    //Routes Permissions
+    Route::any('permissao/{id}/perfis/search','Painel\PermissionController@searchProfile')->name('permissao.profiles.search');
+    Route::get('permissao/{id}/perfis/{profileId}/delete','Painel\PermissionController@deleteProfile')->name('permissao.profile.delete');
+    Route::post('permissao/{id}/perfis/cadastrar','Painel\PermissionController@profilesAddPermission')->name('permissao.profiles.add');
+    Route::get('permissao/{id}/perfis/cadastrar','Painel\PermissionController@profilesAdd')->name('permissao.profiles.add');
+
+    Route::get('permissao/{id}/perfis','Painel\PermissionController@profiles')->name('permissao.perfis');
+    Route::any('permissions/pesquisar','Painel\PermissionController@search')->name('permissions.search');
+    Route::resource('permissoes', 'Painel\PermissionController');
+
+    Route::get('/','Painel\PainelController@index');
 });
 /*** End Route Panel*/ 
 

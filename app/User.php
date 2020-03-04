@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Profile;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -35,6 +36,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    //Retorna todos os Perfis de um determinado user
+    public function profiles() {
+       
+        return $this->belongsTomany(Profile::class);
+    }
 
     /**
      * The attributes that should be cast to native types.

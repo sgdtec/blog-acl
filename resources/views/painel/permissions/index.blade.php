@@ -4,24 +4,24 @@
 
 <div class="bred">
     <a href="{{url('/painel')}}" class="bred">Home  ></a }}> 
-    <a href="{{url('/painel/perfis')}}" class="bred">Perfis</a>
+    <a href="{{url('/painel/permissoes')}}" class="bred">Permissões</a>
 </div>
     
 <div class="title-pg">
-    <h1 class="title-pg">Listagem dos Perfis</h1>
+    <h1 class="title-pg">Listagem das Permissões</h1>
 </div>
 
 <div class="content-din bg-white">
 
     <div class="form-search">
-            {!! Form::open(['route' => 'profiles.search', 'class' => 'form form-inline']) !!}
+            {!! Form::open(['route' => 'permissions.search', 'class' => 'form form-inline']) !!}
                 {!! Form::text('key-search', null, ['class' => 'form-control', 'placeholder' => 'Nome da categoria:']) !!}
                 {!! Form::button('Filtrar', ['type' => 'submit', 'class' => 'btn btn-primary']) !!}
             {!! Form::close() !!}
     </div>
 
     <div class="class-btn-insert">
-        <a href="{{route('perfis.create')}}" class="btn-insert">
+        <a href="{{route('permissoes.create')}}" class="btn-insert">
             <span class="glyphicon glyphicon-plus"></span>
             Cadastrar
         </a>
@@ -39,19 +39,21 @@
             <th>Label</th>
             <th width="250">Ações</th>
         </tr>
-        @forelse ($data as $profile)
-        <tr>
-            <td>{{$profile->name}}</td>
-            <td>{{$profile->label}}</td>
-            <td>
-                <a href="{{route('perfis.edit', $profile->id)}}" class="edit"><span class="glyphicon glyphicon-pencil"></span> Edite</a>
-                <a href="{{route('perfis.show', $profile->id)}}" class="delete"><span class="glyphicon glyphicon-eye-open"></span> View</a>
-                <a href="{{route('profile.users', $profile->id)}}" class="edit"><span class="fa fa-id-card"></span> Users</a>
-            </td>
-        </tr>
-    @empty
-        <p>Nenhum perfil cadastrado!</p>
-    @endforelse
+        @foreach ($data as $permission)
+            @if ($permission)
+                <tr>               
+                    <td>{{$permission->name}}</td>
+                    <td>{{$permission->label}}</td>
+                    <td>
+                        <a href="{{route('permissoes.edit', $permission->id)}}" class="edit"><span class="glyphicon glyphicon-pencil"></span> Edite</a>
+                        <a href="{{route('permissoes.show', $permission->id)}}" class="delete"><span class="glyphicon glyphicon-eye-open"></span> View</a>
+                        <a href="{{route('permissao.perfis', $permission->id)}}" class="edit"><span class="fa fa-users"></span> Perfis</a>
+                    </td>
+            @else
+                    <td>Nenhuma usuário vinculado ao Perfil!</td>
+                </tr>
+            @endif                
+        @endforeach
     </table>
 
     {!! $data->appends(isset($dataForm) ? $dataForm : '')->links() !!}
