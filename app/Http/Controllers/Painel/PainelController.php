@@ -28,8 +28,7 @@ class PainelController extends Controller {
            'totalPosts'       => $totalPosts,
            'totalComments'    => $totalComments,
            'totalProfiles'    => $totalProfiles,
-           'totalPermission' =>  $totalPermission
-
+           'totalPermission'  => $totalPermission
        ]);
    }
 }

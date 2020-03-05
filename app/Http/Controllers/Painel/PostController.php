@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\StandartController;
 
 class PostController extends StandartController {
@@ -195,6 +196,9 @@ class PostController extends StandartController {
     public function show($id){
 
         $data = $this->model->find($id);
+
+        //Faz verificação se é dono do post.
+        $this->authorize('owner', $data);
 
         $title = "{$this->name}: {$data->title}";
 

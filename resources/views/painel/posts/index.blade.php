@@ -39,15 +39,17 @@
             <th>Modo</th>
             <th width="200">Ações</th>
         </tr>
-        @foreach ($data as $post)       
-            <tr>
-                <td>{{$post->title}}</td>
-                <td>{{$post->status == 'A' ? 'Postado' : 'Rascunho'}}</td>
-                <td>
-                    <a href="{{route('posts.edit', $post->id)}}" class="edit"><span class="glyphicon glyphicon-pencil"></span> Edite</a>
-                    <a href="{{route('posts.show', $post->id)}}" class="delete"><span class="glyphicon glyphicon-eye-open"></span> View</a>
-                </td>
-            </tr>
+        @foreach ($data as $post)                    
+                <tr>
+                    <td>{{$post->title}}</td>
+                    <td>{{$post->status == 'A' ? 'Postado' : 'Rascunho'}}</td>
+                    <td>
+                        @can('update', $post)
+                            <a href="{{route('posts.edit', $post->id)}}" class="edit"><span class="glyphicon glyphicon-pencil"></span> Edite</a>
+                        @endcan   
+                        <a href="{{route('posts.show', $post->id)}}" class="delete"><span class="glyphicon glyphicon-eye-open"></span> View</a>
+                    </td>
+                </tr>
         @endforeach
     </table>
 
