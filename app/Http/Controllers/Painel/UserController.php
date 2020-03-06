@@ -14,7 +14,10 @@ class UserController extends Controller
 
 
     public function __construct(User $user){
+
         $this->user = $user;
+
+        $this->middleware('can:users');
     }
 
     /**
@@ -257,6 +260,8 @@ class UserController extends Controller
      */
     public function updateProfile(UserFormRequest $request,$id){
         
+        $this->authorize('update_profile', $id);        
+
         //Recebendo os Dados do Form
         $dataUser = $request->all();
 

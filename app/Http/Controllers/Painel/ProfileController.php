@@ -20,6 +20,8 @@ class ProfileController extends StandartController {
 
         $this->model   = $profile;
         $this->request = $request;
+
+        $this->middleware('can:profiles');
     }
 
     public function users($id) {

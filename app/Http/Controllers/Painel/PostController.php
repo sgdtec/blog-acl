@@ -20,6 +20,11 @@ class PostController extends StandartController {
     public function __construct(Post $post) {
 
         $this->model = $post;
+
+        $this->middleware('can:posts');
+
+        $this->middleware('can:update_post')->only('edit', 'update');
+
     }//__construct
 
     /**
@@ -28,6 +33,10 @@ class PostController extends StandartController {
      * @return \Illuminate\Http\Response
      */
     public function create() {
+
+        if( Gate::denies('create_post') )
+            abort(403, 'Sem acesso');
+
         $title = "Cadastrar {$this->name}";
 
         $categories = Category::get()->pluck('name','id');

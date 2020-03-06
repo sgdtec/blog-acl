@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\Profile;
+use App\Models\Permission;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -37,11 +38,6 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    //Retorna todos os Perfis de um determinado user
-    public function profiles() {
-       
-        return $this->belongsTomany(Profile::class);
-    }
 
     /**
      * The attributes that should be cast to native types.
@@ -51,4 +47,27 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+     //Retorna todos os Perfis de um determinado user
+     public function profiles() {
+       
+        return $this->belongsTomany(Profile::class);
+    }
+
+    public function hasPermission(Permission $permission){
+       
+        return $this->hasProfile($permission->profiles);
+    }
+
+    public function hasProfile($profile) {
+
+        if(is_string($profile)) {
+            return $this->profiles->contains('name', $profile);
+        }
+
+        return !! $profile->intersect($this->profiles)->count();
+    }
+
+
+
 }

@@ -21,6 +21,8 @@ class PermissionController extends StandartController
 
         $this->model   = $permission;
         $this->request = $request;
+
+        $this->middleware('can:permissions');
     }
 
     public function profiles($id) {

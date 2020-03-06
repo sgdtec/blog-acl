@@ -14,7 +14,10 @@ class CommentController extends Controller {
     private $totalPage = 10;
 
     public function __construct(Comment $comment) {
+
         $this->comment = $comment;
+
+        $this->middleware('can:comments');
     }
 
     public function index() {
